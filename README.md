@@ -44,9 +44,4 @@ package.json    NPM scripts and dependencies
 vite.config.js  Vite configuration
 ```
 
-## Screenshot
-
-<!-- Replace 'path' with the actual screenshot when available -->
-![screenshot](path)
-
 React version: 19.x
