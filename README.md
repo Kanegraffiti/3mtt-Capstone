@@ -1,35 +1,39 @@
-# Express + PostgreSQL User API
+# Movie Recommendation App
 
 ## Overview
-Simple Express.js API with PostgreSQL providing CRUD operations for a `users` table.
+A fullstack application that allows users to search movies using the TMDB API, maintain watchlists and favorites, and review films.
 
-## Setup
-```bash
-npm install
-node index.js
+## Tech Stack
+- **Frontend:** React, Axios, Vercel
+- **Backend:** Express, MongoDB, Render
+
+## Folder Structure
+```
+backend/       Express API server
+frontend/      React application
 ```
 
-## Database Setup
-Run the SQL file located at `sql/create_users_table.sql` to create the `users` table in your PostgreSQL database.
+## API Routes
+- **Auth:** `/api/auth/*`
+- **Movies:** `/api/movies/*`
 
-## API Endpoints
-| Method | Route | Description |
-|-------|------|-------------|
-| GET | /users | Get all users |
-| GET | /users/:id | Get user by ID |
-| POST | /users | Add user |
-| PUT | /users/:id | Update user |
-| DELETE | /users/:id | Delete user |
+## How to Run Locally
+1. Create a MongoDB Atlas database.
+2. Copy `.env.example` files to `.env` in `backend/` and `frontend/` and fill values.
+3. Install backend dependencies:
+   ```bash
+   cd backend && npm install
+   npm run dev
+   ```
+4. Install frontend dependencies:
+   ```bash
+   cd frontend && npm install
+   npm start
+   ```
 
-## Example Request (cURL)
-```bash
-curl -X POST http://localhost:3000/users \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Jane","email":"jane@example.com","age":25}'
-```
+## How to Deploy
+- **Frontend:** Deploy `frontend/` folder to Vercel.
+- **Backend:** Deploy `backend/` folder to Render.
 
-## Features
-- Full CRUD using PostgreSQL
-- Environment variables via `.env`
-- Simple validation and error handling
-- Ready to test with Postman or cURL
+## Screenshots + Demo GIFs
+Add UI demo images here.
