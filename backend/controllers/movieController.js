@@ -38,3 +38,21 @@ exports.addWatchlist = async (req, res) => {
   await user.save();
   res.json(user.watchlist);
 };
+
+exports.removeFavorite = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  user.favorites = user.favorites.filter(
+    (id) => id.toString() !== req.params.movieId
+  );
+  await user.save();
+  res.json(user.favorites);
+};
+
+exports.removeWatchlist = async (req, res) => {
+  const user = await User.findById(req.user.id);
+  user.watchlist = user.watchlist.filter(
+    (id) => id.toString() !== req.params.movieId
+  );
+  await user.save();
+  res.json(user.watchlist);
+};
