@@ -18,16 +18,28 @@ frontend/      React application
 - **Movies:** `/api/movies/*`
 
 ## How to Run Locally
-1. Create a MongoDB Atlas database.
-2. Copy `.env.example` files to `.env` in `backend/` and `frontend/` and fill values.
-3. Install backend dependencies:
+1. Create a MongoDB Atlas database (or use a local MongoDB instance).
+2. Copy the example environment files and edit them with your credentials:
    ```bash
-   cd backend && npm install
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env
+   ```
+   Then open each `.env` file and supply values for:
+   - `MONGO_URI`
+   - `JWT_SECRET`
+   - `TMDB_API_KEY`
+   - `REACT_APP_API_URL`
+   - `REACT_APP_TMDB_KEY`
+3. Install backend dependencies and start the server:
+   ```bash
+   cd backend
+   npm install
    npm run dev
    ```
-4. Install frontend dependencies:
+4. In a new terminal, install frontend dependencies and start the React app:
    ```bash
-   cd frontend && npm install
+   cd frontend
+   npm install
    npm start
    ```
 
