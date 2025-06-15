@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 const Watchlist = () => {
   const [movies, setMovies] = useState([]);
+  const { token } = useContext(AuthContext);
 
   const fetchWatchlist = async () => {
     try {
@@ -10,7 +12,7 @@ const Watchlist = () => {
         `${process.env.REACT_APP_API_URL}/api/movies/watchlist`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -36,7 +38,7 @@ const Watchlist = () => {
         `${process.env.REACT_APP_API_URL}/api/movies/watchlist/${movieId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

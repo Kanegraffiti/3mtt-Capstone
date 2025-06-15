@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,7 +20,7 @@ const Login = () => {
         `${process.env.REACT_APP_API_URL}/api/auth/login`,
         formData
       );
-      localStorage.setItem('token', res.data.token);
+      login(res.data.token);
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.msg || 'Login failed');
