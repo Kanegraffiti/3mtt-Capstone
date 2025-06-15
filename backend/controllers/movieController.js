@@ -8,7 +8,31 @@ const tmdb = axios.create({
 
 exports.search = async (req, res) => {
   try {
-    const { data } = await tmdb.get('/search/movie', { params: { query: req.query.title } });
+    const { title, genre, year, rating, sort } = req.query;
+    const params = {};
+
+    let endpoint = '/search/movie';
+    if (title) {
+      params.query = title;
+    } else {
+      endpoint = '/discover/movie';
+    }
+
+    if (genre) params.with_genres = genre;
+    if (year) params.primary_release_year = year;
+    if (rating) params['vote_average.gte'] = rating;
+    if (sort) params.sort_by = sort;
+
+    const { data } = await tmdb.get(endpoint, { params });
+    res.json(data);
+  } catch (err) {
+    res.status(500).send('TMDB error');
+  }
+};
+
+exports.getRecommendations = async (req, res) => {
+  try {
+    const { data } = await tmdb.get('/movie/popular');
     res.json(data);
   } catch (err) {
     res.status(500).send('TMDB error');

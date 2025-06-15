@@ -9,9 +9,11 @@ const {
   addWatchlist,
   removeFavorite,
   removeWatchlist,
+  getRecommendations,
 } = require('../controllers/movieController');
 
 router.get('/search', search);
+router.get('/recommendations', auth, getRecommendations);
 router.get('/favorites', auth, getFavorites);
 router.post('/favorites', auth, addFavorite);
 router.delete('/favorites/:movieId', auth, removeFavorite);

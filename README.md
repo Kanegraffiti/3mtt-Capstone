@@ -1,7 +1,30 @@
-# Movie Recommendation App
+# Capstone
 
 ## Overview
-A fullstack application that allows users to search movies using the TMDB API, maintain watchlists and favorites, and review films.
+Capstone is a full-featured movie recommendation platform where users can discover, search, and save their favorite movies.
+
+## Core Features
+1. **User Authentication**
+   - User registration and login
+   - Secure password handling
+   - JWT token-based authentication
+2. **Movie Discovery**
+   - Search movies by title, genre, or year
+   - Filter by rating, release date, and popularity
+   - View detailed movie information
+   - Get personalized recommendations
+3. **User Features**
+   - Save favorite movies
+   - Create custom watchlists
+   - Rate and review movies
+   - User profile management
+
+## Technical Requirements
+* React frontend with modern UI components
+* Express.js backend with RESTful API
+* MongoDB database for user data
+* Integration with external movie API (e.g., TMDB)
+* Responsive design for mobile and desktop
 
 ## Tech Stack
 - **Frontend:** React, Axios, Vercel
@@ -67,6 +90,7 @@ frontend/      React application
 ## How to Deploy
 - **Frontend:** Deploy `frontend/` folder to Vercel.
 - **Backend:** Deploy `backend/` folder to Render.
+- Set up CI/CD pipeline
 
 ## Deployment URLs
 - **Frontend:** <https://movie-app.vercel.app>

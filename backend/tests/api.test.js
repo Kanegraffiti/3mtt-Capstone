@@ -50,6 +50,34 @@ describe('Movie operations', () => {
     expect(res.body.results[0].title).toBe('Mock');
   });
 
+  test('searches movies with filters', async () => {
+    axiosInstance.get.mockResolvedValue({ data: { results: [{ id: 2, title: 'Filter' }] } });
+    const res = await request(app)
+      .get('/api/movies/search')
+      .query({ genre: '28', rating: 7, sort: 'popularity.desc' });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.results[0].title).toBe('Filter');
+  });
+
+  test('returns movie recommendations', async () => {
+    axiosInstance.get.mockResolvedValue({ data: { results: [{ id: 3, title: 'Rec' }] } });
+    await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Rec', email: 'rec@example.com', password: 'pass' });
+    const login = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'rec@example.com', password: 'pass' });
+    const token = login.body.token;
+
+    const res = await request(app)
+      .get('/api/movies/recommendations')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.results[0].title).toBe('Rec');
+  });
+
   test('handles watchlist operations', async () => {
     await request(app)
       .post('/api/auth/register')
