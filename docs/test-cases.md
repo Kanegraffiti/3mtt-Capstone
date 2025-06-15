@@ -16,6 +16,11 @@ curl -X POST http://localhost:5000/api/auth/login \
 
 Save the returned token for the following requests:
 
+## Current User Profile
+```bash
+curl -H "Authorization: Bearer <TOKEN>" http://localhost:5000/api/users/me
+```
+
 ## Search Movies
 ```bash
 curl "http://localhost:5000/api/movies/search?title=inception"

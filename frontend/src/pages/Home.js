@@ -1,11 +1,28 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchTrending = async () => {
+      try {
+        const res = await axios.get(
+          'https://api.themoviedb.org/3/trending/movie/week',
+          { params: { api_key: process.env.REACT_APP_TMDB_KEY } }
+        );
+        setMovies(res.data.results || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchTrending();
+  }, []);
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -69,15 +86,18 @@ const Home = () => {
         <button type="submit">Search</button>
       </form>
 
+      <h3>Trending Movies</h3>
       <div className="movie-grid">
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card" style={{ marginBottom: '1rem' }}>
-            {movie.poster_path && (
-              <img
-                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                alt={movie.title}
-              />
-            )}
+            <Link to={`/movie/${movie.id}`}>
+              {movie.poster_path && (
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                  alt={movie.title}
+                />
+              )}
+            </Link>
             <h3>{movie.title}</h3>
             <button onClick={() => addWatchlist(movie.id)}>Add to Watchlist</button>
             <button onClick={() => addFavorite(movie.id)}>Add to Favorite</button>

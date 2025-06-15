@@ -1,4 +1,47 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: #141414;
+  color: #fff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #1f1f1f;
+}
+
+.nav-links a,
+.link-button {
+  color: #fff;
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.movie-card {
+  background-color: #222;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.movie-card img {
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
 }
