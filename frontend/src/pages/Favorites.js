@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 const Favorites = () => {
   const [movies, setMovies] = useState([]);
+  const { token } = useContext(AuthContext);
 
   const fetchFavorites = async () => {
     try {
@@ -10,7 +12,7 @@ const Favorites = () => {
         `${process.env.REACT_APP_API_URL}/api/movies/favorites`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -36,7 +38,7 @@ const Favorites = () => {
         `${process.env.REACT_APP_API_URL}/api/movies/favorites/${movieId}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );

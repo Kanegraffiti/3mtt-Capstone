@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
+  const { token } = useContext(AuthContext);
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const Home = () => {
         { movieId },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -45,7 +47,7 @@ const Home = () => {
         { movieId },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
