@@ -81,3 +81,24 @@ describe('Movie operations', () => {
     expect(res.body).not.toContain(movieId);
   });
 });
+
+describe('User routes', () => {
+  test('returns current user profile', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Prof', email: 'prof@example.com', password: 'pass' });
+
+    const login = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'prof@example.com', password: 'pass' });
+    const token = login.body.token;
+
+    const res = await request(app)
+      .get('/api/users/me')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.email).toBe('prof@example.com');
+    expect(res.body.password).toBeUndefined();
+  });
+});

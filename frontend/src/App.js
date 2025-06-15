@@ -6,11 +6,15 @@ import Home from './pages/Home';
 import Watchlist from './pages/Watchlist';
 import Favorites from './pages/Favorites';
 import SubmitReview from './pages/SubmitReview';
+import Profile from './pages/Profile';
+import MovieDetails from './pages/MovieDetails';
+import NavBar from './components/NavBar';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <Router>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -39,6 +43,15 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/movie/:id" element={<MovieDetails />} />
       </Routes>
     </Router>
   );

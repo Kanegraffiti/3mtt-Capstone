@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Watchlist = () => {
@@ -54,12 +55,14 @@ const Watchlist = () => {
       <div className="movie-grid">
         {movies.map((movie) => (
           <div key={movie.id} className="movie-card" style={{ marginBottom: '1rem' }}>
-            {movie.poster_path && (
-              <img
-                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
-                alt={movie.title}
-              />
-            )}
+            <Link to={`/movie/${movie.id}`}>
+              {movie.poster_path && (
+                <img
+                  src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                  alt={movie.title}
+                />
+              )}
+            </Link>
             <h3>{movie.title}</h3>
             <button onClick={() => removeMovie(movie.id)}>Remove</button>
           </div>

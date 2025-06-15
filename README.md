@@ -31,6 +31,7 @@ frontend/      React application
 ## API Endpoints
 - `POST /api/auth/register` - register new user
 - `POST /api/auth/login` - authenticate user
+- `GET /api/users/me` - current authenticated user profile
 - `GET /api/movies/search` - search movies by title
 - `GET /api/movies/favorites` - list favorite movie IDs
 - `POST /api/movies/favorites` - add favorite movie ID
