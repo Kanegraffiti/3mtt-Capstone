@@ -36,11 +36,14 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `GET /movies/trending` – trending movies
 - `GET /users/profile` – get current user profile (requires auth)
 - `POST /watchlist/add` – add movie to watchlist (requires auth)
-- `DELETE /watchlist/:id` – remove movie from watchlist
-- `POST /reviews/:movieId` – create a movie review
+- `GET /watchlist` – list saved movies (requires auth)
+- `DELETE /watchlist/:movieId` – remove movie from watchlist
+- `POST /reviews/:movieId` – create a movie review (requires auth)
+- `GET /reviews/:movieId` – list reviews for a movie
+- `GET /movies/:id` – movie details
 
 ## Deployment
-- **Frontend** can be deployed to **Vercel**. Configure the `VITE_API_URL` environment variable to point to the Render backend URL.
+- **Frontend** can be deployed to **Netlify**. Configure the `VITE_API_URL` environment variable to point to the Render backend URL.
 - **Backend** can be deployed to **Render**. Set environment variables `MONGO_URI`, `JWT_SECRET`, and `TMDB_API_KEY` in the Render dashboard.
 - Example GitHub Actions workflow files can be added to automate deployment.
 
