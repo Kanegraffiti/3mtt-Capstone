@@ -13,6 +13,7 @@ const NavBar = () => {
         <Link to="/">Home</Link>
         {user ? (
           <>
+            <Link to="/watchlist">Watchlist</Link>
             <Link to="/profile">Profile</Link>
             <button onClick={logout}>Logout</button>
           </>
