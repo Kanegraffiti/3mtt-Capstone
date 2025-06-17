@@ -26,13 +26,25 @@ export const AuthProvider = ({ children }) => {
     await axios.post('/auth/register', { name, email, password });
   };
 
+  const updateProfile = async (name, email) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const res = await axios.put('/users/profile', { name, email }, { headers: { Authorization: `Bearer ${token}` } });
+    setUser(res.data);
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);
   };
-
+  
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, setUser }}>
+return (
+  <AuthContext.Provider value={{ user, login, register, logout, updateProfile, setUser }}>
+    {children}
+  </AuthContext.Provider>
+);
+
       {children}
     </AuthContext.Provider>
   );
