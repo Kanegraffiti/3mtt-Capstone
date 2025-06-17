@@ -34,10 +34,12 @@ const Profile = () => {
         <button className="w-full bg-blue-500 py-2" type="submit">Update</button>
       </form>
       <div>
-        <h3 className="text-lg mb-2">Watchlist</h3>
-        {user.watchlist.length === 0 && <p>No movies saved.</p>}
+        <h3 className="text-lg mb-2">Watchlists</h3>
+        {user.watchlists.length === 0 && <p>No watchlists.</p>}
         <ul className="list-disc ml-6">
-          {user.watchlist.map(m => <li key={m.tmdbId}>{m.title}</li>)}
+          {user.watchlists.map(l => (
+            <li key={l._id}>{l.name} ({l.movies.length})</li>
+          ))}
         </ul>
       </div>
       <div>

@@ -7,9 +7,10 @@ const MovieCard = ({ movie }) => {
 
   const add = async (e) => {
     e.preventDefault();
-    if (!user) return;
+    if (!user || !user.watchlists || user.watchlists.length === 0) return;
     const token = localStorage.getItem('token');
-    await axios.post('/watchlist/add', { tmdbId: movie.id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
+    const listId = user.watchlists[0]._id;
+    await axios.post(`/watchlist/${listId}/add`, { tmdbId: movie.id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
   };
 
   return (
