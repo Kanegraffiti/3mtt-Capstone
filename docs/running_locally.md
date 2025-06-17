@@ -24,6 +24,12 @@ This guide covers getting the Movie Recommendation app running on Android using 
    cp server/.env.example server/.env
    cp client/.env.example client/.env
    ```
+   These files contain placeholders for:
+   - `MONGO_URI`
+   - `JWT_SECRET`
+   - `TMDB_API_KEY`
+   - `PORT`
+   - `VITE_API_URL`
 6. Start the backend and frontend in separate Termux sessions:
    ```bash
    npm --prefix server run dev
@@ -48,6 +54,7 @@ This guide covers getting the Movie Recommendation app running on Android using 
    copy server\.env.example server\.env
    copy client\.env.example client\.env
    ```
+   These files include variables named `MONGO_URI`, `JWT_SECRET`, `TMDB_API_KEY`, `PORT` and `VITE_API_URL`.
 5. In two terminals start the servers:
    ```bash
    npm --prefix server run dev

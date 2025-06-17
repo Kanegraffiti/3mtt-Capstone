@@ -20,6 +20,12 @@ This is a full-stack movie recommendation application built with the MERN stack.
    cp server/.env.example server/.env
    cp client/.env.example client/.env
    ```
+   The samples define the following variables:
+   - `MONGO_URI` – MongoDB connection string
+   - `JWT_SECRET` – secret for signing JWT tokens
+   - `TMDB_API_KEY` – your TMDB API key
+   - `PORT` – Express server port
+   - `VITE_API_URL` – URL of the backend API for the React app
 3. Start the development servers in separate terminals:
    ```bash
    # Server on port 5000
