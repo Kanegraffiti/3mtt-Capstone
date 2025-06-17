@@ -40,6 +40,7 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `POST /auth/login` – obtain JWT token
 - `GET /movies/search?q=query` – search movies via TMDB
 - `GET /movies/trending` – trending movies
+- `GET /movies/recommendations` – personalized recommendations (requires auth)
 - `GET /users/profile` – get current user profile (requires auth)
 - `POST /watchlist` – create a new watchlist (requires auth)
 - `PUT /watchlist/:id` – rename/update a watchlist (requires auth)
