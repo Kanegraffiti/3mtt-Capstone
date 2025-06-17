@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import Watchlist from '../models/Watchlist.js';
 import Review from '../models/Review.js';
 
+import Recommendation from "../models/Recommendation.js";
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 export const searchMovies = async (req, res) => {
@@ -85,6 +86,57 @@ export const recommendedMovies = async (req, res) => {
     }
 
     res.json({ results: deduped });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
+export const advancedRecommendations = async (req, res) => {
+  try {
+    const reviews = await Review.find({ userId: req.user });
+    if (reviews.length === 0) {
+      await Recommendation.deleteMany({ user: req.user });
+      return res.json({ results: [] });
+    }
+    const query = new URLSearchParams({ api_key: process.env.TMDB_API_KEY });
+    // fetch movie genres for each reviewed movie
+    const reviewDetails = await Promise.all(
+      reviews.map(r =>
+        fetch(`${TMDB_BASE}/movie/${r.movieId}?${query}`).then(resp => resp.json())
+      )
+    );
+    const genreMap = {};
+    reviewDetails.forEach((data, idx) => {
+      const genres = data.genres || [];
+      genres.forEach(g => {
+        if (!genreMap[g.id]) genreMap[g.id] = [];
+        genreMap[g.id].push(reviews[idx].rating);
+      });
+    });
+    const genreScores = {};
+    Object.keys(genreMap).forEach(id => {
+      const vals = genreMap[id];
+      genreScores[id] = vals.reduce((a, b) => a + b, 0) / vals.length;
+    });
+    const trendingRes = await fetch(`${TMDB_BASE}/trending/movie/week?${query}`);
+    const trending = await trendingRes.json();
+    const scored = (trending.results || []).map(m => {
+      const scores = (m.genre_ids || []).map(g => genreScores[g] || 0);
+      const score = scores.length ? scores.reduce((a,b) => a+b,0) / scores.length : 0;
+      return { ...m, score };
+    }).sort((a,b) => b.score - a.score);
+
+    await Recommendation.deleteMany({ user: req.user });
+    const docs = scored.slice(0, 10).map(m => ({
+      user: req.user,
+      movieId: m.id,
+      title: m.title,
+      posterPath: m.poster_path,
+      score: m.score,
+    }));
+    if (docs.length > 0) await Recommendation.insertMany(docs);
+    res.json({ results: scored.slice(0, 10) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
