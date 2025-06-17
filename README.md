@@ -46,12 +46,16 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `POST /watchlist` - create a new watchlist (requires auth)  
 - `PUT /watchlist/:id` - rename/update a watchlist (requires auth)  
 - `DELETE /watchlist/:id` - delete a watchlist (requires auth)  
-- `POST /watchlist/:id/add` - add movie to watchlist (requires auth)  
-- `GET /watchlist` - list all watchlists with movies (requires auth)  
-- `DELETE /watchlist/:id/movies/:movieId` - remove movie from watchlist  
-- `POST /reviews/:movieId` - create a movie review (requires auth)  
-- `GET /reviews/:movieId` - list reviews for a movie  
-- `GET /movies/:id` - movie details  
+- `POST /watchlist/:id/add` - add movie to watchlist (requires auth)
+- `GET /watchlist` - list all watchlists with movies (requires auth)
+- `DELETE /watchlist/:id/movies/:movieId` - remove movie from watchlist
+- `GET /watchlist/shared/:id` - view a shared watchlist
+- `POST /reviews/:movieId` - create a movie review (requires auth)
+- `GET /reviews/:movieId` - list reviews for a movie
+- `POST /users/:id/follow` - follow another user (requires auth)
+- `DELETE /users/:id/follow` - unfollow a user (requires auth)
+- `GET /users/following/watchlists` - watchlists from followed users (requires auth)
+- `GET /movies/:id` - movie details
 
 ## Deployment
 - **Frontend** can be deployed to **Vercel**. Configure the `VITE_API_URL` environment variable on Vercel so the React app knows the Render backend URL.

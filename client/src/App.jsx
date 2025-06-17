@@ -5,6 +5,7 @@ import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
 import Watchlist from './pages/Watchlist.jsx';
 import MovieDetail from './pages/MovieDetail.jsx';
+import SharedList from './pages/SharedList.jsx';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext.jsx';
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/watchlist" element={<Watchlist />} />
+        <Route path="/list/:id" element={<SharedList />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
       </Routes>
     </AuthProvider>

@@ -28,3 +28,44 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const followUser = async (req, res) => {
+  try {
+    if (req.user === req.params.id) {
+      return res.status(400).json({ message: 'Cannot follow yourself' });
+    }
+    const user = await User.findById(req.user);
+    const target = await User.findById(req.params.id);
+    if (!target) return res.status(404).json({ message: 'User not found' });
+    if (!user.following.includes(target._id)) {
+      user.following.push(target._id);
+      await user.save();
+    }
+    res.json({ following: user.following });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const unfollowUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    user.following = user.following.filter(
+      u => u.toString() !== req.params.id
+    );
+    await user.save();
+    res.json({ following: user.following });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const getFollowedWatchlists = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+    const lists = await Watchlist.find({ user: { $in: user.following } }).populate('user', 'name');
+    res.json(lists);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
