@@ -41,6 +41,7 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `GET /movies/search?q=query` – search movies via TMDB
 - `GET /movies/trending` – trending movies
 - `GET /users/profile` – get current user profile (requires auth)
+- `PUT /users/profile` – update the authenticated user's name and email
 - `POST /watchlist/add` – add movie to watchlist (requires auth)
 - `GET /watchlist` – list saved movies (requires auth)
 - `DELETE /watchlist/:movieId` – remove movie from watchlist
