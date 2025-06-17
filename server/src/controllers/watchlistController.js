@@ -82,3 +82,14 @@ export const deleteMovie = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Public fetch of a watchlist by id for sharing
+export const getSharedWatchlist = async (req, res) => {
+  try {
+    const list = await Watchlist.findById(req.params.id).populate('user', 'name');
+    if (!list) return res.status(404).json({ message: 'Watchlist not found' });
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
