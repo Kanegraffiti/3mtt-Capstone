@@ -34,10 +34,20 @@ jobs:
         run: npm test --if-present
         working-directory: client
 
+      # Trigger Render deployment if the deploy hook URL is configured
+      # Set the `RENDER_DEPLOY_HOOK_URL` secret in your repository with the
+      # Deploy Hook URL from Render.
       - name: Deploy backend to Render
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::error::RENDER_DEPLOY_HOOK_URL secret is not set."
+            echo "Add your Render deploy hook URL in the repository secrets."
+            exit 1
+          fi
+          curl -X POST "$DEPLOY_HOOK_URL"
 
       - name: Deploy frontend to Vercel
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
