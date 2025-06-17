@@ -7,6 +7,7 @@ import { AuthContext } from '../context/AuthContext.jsx';
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [advanced, setAdvanced] = useState([]);
   const [query, setQuery] = useState('');
   const [genre, setGenre] = useState('');
   const [year, setYear] = useState('');
@@ -20,6 +21,7 @@ const Home = () => {
   useEffect(() => {
     if (!user) {
       setRecommended([]);
+      setAdvanced([]);
       return;
     }
     const token = localStorage.getItem('token');
@@ -29,6 +31,12 @@ const Home = () => {
       })
       .then(res => setRecommended(res.data.results))
       .catch(() => setRecommended([]));
+    axios
+      .get('/movies/recommendations/advanced', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(res => setAdvanced(res.data.results))
+      .catch(() => setAdvanced([]));
   }, [user]);
 
   const search = async (e) => {
@@ -68,6 +76,13 @@ const Home = () => {
       {user && recommended.length > 0 && (
         <Slider title="Recommended for You">
           {recommended.map(m => (
+            <MovieCard key={m.id} movie={m} />
+          ))}
+        </Slider>
+      )}
+      {user && advanced.length > 0 && (
+        <Slider title="Top Picks">
+          {advanced.map(m => (
             <MovieCard key={m.id} movie={m} />
           ))}
         </Slider>
