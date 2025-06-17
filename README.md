@@ -12,6 +12,8 @@ This is a full-stack movie recommendation application built with the MERN stack.
 ## Setup
 1. Clone the repository and install dependencies for both `server` and `client`:
    ```bash
+   git clone https://github.com/3mtt-org/movie-recommendation-app.git
+   cd movie-recommendation-app
    cd server && npm install
    cd ../client && npm install
    ```
