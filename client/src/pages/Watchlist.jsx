@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard.jsx';
+import Slider from '../components/common/Slider.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Watchlist = () => {
@@ -66,14 +67,14 @@ const Watchlist = () => {
           </div>
           {list.description && <p className="mb-2 text-sm text-gray-300">{list.description}</p>}
           {list.movies.length === 0 && <p>No movies.</p>}
-          <div className="overflow-x-auto flex gap-4 pb-2">
+          <Slider>
             {list.movies.map(m => (
-              <div key={m.tmdbId} className="relative">
+              <div key={m.tmdbId} style={{ position: 'relative' }}>
                 <MovieCard movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }} />
-                <button onClick={() => removeMovie(list._id, m.tmdbId)} className="absolute top-2 right-2 bg-red-500 px-2 text-sm">Remove</button>
+                <button onClick={() => removeMovie(list._id, m.tmdbId)} style={{ position: 'absolute', top: '0.5rem', right: '0.5rem', background: '#ef4444', fontSize: '0.875rem', padding: '0 0.25rem' }}>Remove</button>
               </div>
             ))}
-          </div>
+          </Slider>
         </div>
       ))}
     </div>
