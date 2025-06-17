@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard.jsx';
-import Slider from '../components/Slider.jsx';
+import Slider from '../components/common/Slider.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Home = () => {

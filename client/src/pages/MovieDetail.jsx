@@ -1,7 +1,35 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
 import { AuthContext } from '../context/AuthContext.jsx';
+import Rating from '../components/common/Rating.jsx';
+import Placeholder from '../components/common/Placeholder.jsx';
+
+const Container = styled.div`
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const Title = styled.h2`
+  font-size: 1.5rem;
+`;
+
+const ReviewSection = styled.div``;
+
+const ReviewItem = styled.div`
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #374151;
+  padding-bottom: 0.5rem;
+`;
+
+const ReviewForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -36,12 +64,16 @@ const MovieDetail = () => {
     setRating(0);
   };
 
-  if (!movie) return <p className="p-4">Loading...</p>;
+  if (!movie) return (
+    <div style={{ padding: '1rem' }}>
+      <Placeholder height="2rem" />
+    </div>
+  );
   const trailer = videos.find(v => v.site === 'YouTube' && v.type === 'Trailer');
 
   return (
-    <div className="p-4 space-y-4">
-      <h2 className="text-2xl">{movie.title}</h2>
+    <Container>
+      <Title>{movie.title}</Title>
       {trailer && (
         <iframe
           width="560"
@@ -51,31 +83,31 @@ const MovieDetail = () => {
           allowFullScreen
         />
       )}
-      {user && <button onClick={addToWatchlist} className="bg-blue-500 px-4 py-2">Add to Watchlist</button>}
+      {user && <button onClick={addToWatchlist} style={{ background: '#3b82f6', padding: '0.5rem 1rem' }}>Add to Watchlist</button>}
       <p>{movie.overview}</p>
-      <div>
-        <h3 className="text-xl mb-2">Reviews</h3>
+      <ReviewSection>
+        <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Reviews</h3>
         {reviews.map(r => (
-          <div key={r._id} className="mb-2 border-b border-gray-700 pb-2">
-            <p className="font-bold">{r.userId.name} - {r.rating}/5</p>
+          <ReviewItem key={r._id}>
+            <p style={{ fontWeight: 'bold' }}>{r.userId.name} - <Rating value={r.rating} /></p>
             <p>{r.comment}</p>
-          </div>
+          </ReviewItem>
         ))}
-      </div>
+      </ReviewSection>
       {user && (
-        <form onSubmit={submitReview} className="space-y-2">
+        <ReviewForm onSubmit={submitReview}>
           <div>
-            <label className="mr-2">Rating:</label>
-            <select value={rating} onChange={e => setRating(e.target.value)} className="text-black">
+            <label style={{ marginRight: '0.5rem' }}>Rating:</label>
+            <select value={rating} onChange={e => setRating(Number(e.target.value))} style={{ color: 'black' }}>
               <option value="0">0</option>
               {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
             </select>
           </div>
-          <textarea className="w-full p-2 text-black" value={comment} onChange={e => setComment(e.target.value)} placeholder="Write a review" />
-          <button className="bg-green-500 px-4 py-2" type="submit">Submit Review</button>
-        </form>
+          <textarea style={{ padding: '0.5rem', color: 'black' }} value={comment} onChange={e => setComment(e.target.value)} placeholder="Write a review" />
+          <button style={{ background: '#10b981', padding: '0.5rem 1rem' }} type="submit">Submit Review</button>
+        </ReviewForm>
       )}
-    </div>
+    </Container>
   );
 };
 
