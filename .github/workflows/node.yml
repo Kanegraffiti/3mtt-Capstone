@@ -1,0 +1,59 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: server
+
+      - name: Run backend tests
+        run: npm test --if-present
+        working-directory: server
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: client
+
+      - name: Run frontend tests
+        run: npm test --if-present
+        working-directory: client
+
+      - name: Deploy backend to Render
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: peter-evans/render-deploy@v1
+        with:
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          env: |
+            MONGO_URI=${{ secrets.MONGO_URI }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+            TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}
+
+      - name: Deploy frontend to Vercel
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: client
+          prod: true
+          env: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+
