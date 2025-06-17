@@ -17,27 +17,43 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post('/auth/login', { email, password });
-    localStorage.setItem('token', res.data.token);
-    const profile = await axios.get('/users/profile', {
-      headers: { Authorization: `Bearer ${res.data.token}` }
-    });
-    setUser(profile.data);
+    try {
+      const res = await axios.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      const profile = await axios.get('/users/profile', {
+        headers: { Authorization: `Bearer ${res.data.token}` }
+      });
+      setUser(profile.data);
+      return true;
+    } catch (err) {
+      console.error('Login failed:', err);
+      return false;
+    }
   };
 
   const register = async (name, email, password) => {
-    await axios.post('/auth/register', { name, email, password });
+    try {
+      await axios.post('/auth/register', { name, email, password });
+      return true;
+    } catch (err) {
+      console.error('Registration failed:', err);
+      return false;
+    }
   };
 
   const updateProfile = async (name, email) => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-    const res = await axios.put(
-      '/users/profile',
-      { name, email },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setUser(res.data);
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      const res = await axios.put(
+        '/users/profile',
+        { name, email },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUser(res.data);
+    } catch (err) {
+      console.error('Profile update failed:', err);
+    }
   };
 
   const logout = () => {

@@ -1,15 +1,23 @@
 import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Register = () => {
-  const { register } = useContext(AuthContext);
+  const { register, login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await register(name, email, password);
+    const success = await register(name, email, password);
+    if (success) {
+      await login(email, password);
+      navigate('/profile');
+    } else {
+      alert('Registration failed');
+    }
   };
 
   return (
