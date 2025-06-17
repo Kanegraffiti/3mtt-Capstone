@@ -1,0 +1,53 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: server
+
+      - name: Run backend tests
+        run: npm test --if-present
+        working-directory: server
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: client
+
+      - name: Run frontend tests
+        run: npm test --if-present
+        working-directory: client
+
+      - name: Deploy backend to Render
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+
+      - name: Deploy frontend to Vercel
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: client
+          prod: true
+          env: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+
