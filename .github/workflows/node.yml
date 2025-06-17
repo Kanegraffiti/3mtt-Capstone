@@ -36,14 +36,8 @@ jobs:
 
       - name: Deploy backend to Render
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: peter-evans/render-deploy@v1
-        with:
-          api-key: ${{ secrets.RENDER_API_KEY }}
-          service-id: ${{ secrets.RENDER_SERVICE_ID }}
-          env: |
-            MONGO_URI=${{ secrets.MONGO_URI }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            TMDB_API_KEY=${{ secrets.TMDB_API_KEY }}
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
       - name: Deploy frontend to Vercel
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
