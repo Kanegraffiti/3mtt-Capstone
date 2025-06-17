@@ -1,9 +1,23 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Profile = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, updateProfile } = useContext(AuthContext);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setName(user.user.name);
+      setEmail(user.user.email);
+    }
+  }, [user]);
   if (!user) return <p className="p-4">Loading...</p>;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await updateProfile(name, email);
+  };
 
   return (
     <div className="p-4 space-y-4">
@@ -14,6 +28,11 @@ const Profile = () => {
         </div>
         <button onClick={logout} className="bg-red-500 px-4 py-1">Logout</button>
       </div>
+      <form onSubmit={handleSubmit} className="space-y-2 max-w-sm">
+        <input className="w-full p-2 text-black" value={name} onChange={e => setName(e.target.value)} />
+        <input className="w-full p-2 text-black" value={email} onChange={e => setEmail(e.target.value)} />
+        <button className="w-full bg-blue-500 py-2" type="submit">Update</button>
+      </form>
       <div>
         <h3 className="text-lg mb-2">Watchlists</h3>
         {user.watchlists.length === 0 && <p>No watchlists.</p>}
