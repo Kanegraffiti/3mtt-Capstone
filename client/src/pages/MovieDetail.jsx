@@ -20,8 +20,9 @@ const MovieDetail = () => {
 
   const addToWatchlist = async () => {
     const token = localStorage.getItem('token');
-    if (!token) return;
-    await axios.post('/watchlist/add', { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
+    if (!token || !user || !user.watchlists || user.watchlists.length === 0) return;
+    const listId = user.watchlists[0]._id;
+    await axios.post(`/watchlist/${listId}/add`, { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
   };
 
   const submitReview = async (e) => {

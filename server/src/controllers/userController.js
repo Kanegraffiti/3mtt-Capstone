@@ -5,9 +5,9 @@ import Review from '../models/Review.js';
 export const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user).select('-password');
-    const watchlist = await Watchlist.findOne({ user: req.user });
+    const watchlists = await Watchlist.find({ user: req.user });
     const reviews = await Review.find({ userId: req.user });
-    res.json({ user, watchlist: watchlist ? watchlist.movies : [], reviews });
+    res.json({ user, watchlists, reviews });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
