@@ -5,7 +5,7 @@ This is a full-stack movie recommendation application built with the MERN stack.
 ## Features
 - JWT based authentication with registration and login
 - Browse trending movies and search by title
-- Save movies to personal watchlists
+- Save movies to personal watchlists (multiple lists supported)
 - Rate and review movies
 - Responsive mobile‑first UI built with React and Tailwind CSS
 
@@ -35,9 +35,12 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `GET /movies/search?q=query` – search movies via TMDB
 - `GET /movies/trending` – trending movies
 - `GET /users/profile` – get current user profile (requires auth)
-- `POST /watchlist/add` – add movie to watchlist (requires auth)
-- `GET /watchlist` – list saved movies (requires auth)
-- `DELETE /watchlist/:movieId` – remove movie from watchlist
+- `POST /watchlist` – create a new watchlist (requires auth)
+- `PUT /watchlist/:id` – rename/update a watchlist (requires auth)
+- `DELETE /watchlist/:id` – delete a watchlist (requires auth)
+- `POST /watchlist/:id/add` – add movie to a watchlist (requires auth)
+- `GET /watchlist` – list all watchlists with movies (requires auth)
+- `DELETE /watchlist/:id/movies/:movieId` – remove movie from a watchlist
 - `POST /reviews/:movieId` – create a movie review (requires auth)
 - `GET /reviews/:movieId` – list reviews for a movie
 - `GET /movies/:id` – movie details

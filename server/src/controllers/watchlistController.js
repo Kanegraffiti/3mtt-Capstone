@@ -1,10 +1,53 @@
 import Watchlist from '../models/Watchlist.js';
 
-// Get movies in the authenticated user's watchlist
+// Get all watchlists for the authenticated user
 export const getWatchlist = async (req, res) => {
   try {
-    const list = await Watchlist.findOne({ user: req.user });
-    res.json(list ? list.movies : []);
+    const lists = await Watchlist.find({ user: req.user });
+    res.json(lists);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Create a new watchlist
+export const createWatchlist = async (req, res) => {
+  const { name, description } = req.body;
+  try {
+    const list = await Watchlist.create({
+      user: req.user,
+      name,
+      description,
+      movies: [],
+    });
+    res.status(201).json(list);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Rename/update a watchlist
+export const updateWatchlist = async (req, res) => {
+  const { name, description } = req.body;
+  try {
+    const list = await Watchlist.findOneAndUpdate(
+      { _id: req.params.id, user: req.user },
+      { name, description },
+      { new: true }
+    );
+    if (!list) return res.status(404).json({ message: 'Watchlist not found' });
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Delete a watchlist
+export const deleteWatchlist = async (req, res) => {
+  try {
+    const list = await Watchlist.findOneAndDelete({ _id: req.params.id, user: req.user });
+    if (!list) return res.status(404).json({ message: 'Watchlist not found' });
+    res.json({ message: 'Deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -14,10 +57,8 @@ export const getWatchlist = async (req, res) => {
 export const addMovie = async (req, res) => {
   const movie = req.body;
   try {
-    let list = await Watchlist.findOne({ user: req.user });
-    if (!list) {
-      list = await Watchlist.create({ user: req.user, name: 'My Watchlist', movies: [] });
-    }
+    const list = await Watchlist.findOne({ _id: req.params.id, user: req.user });
+    if (!list) return res.status(404).json({ message: 'Watchlist not found' });
     const exists = list.movies.some(m => m.tmdbId === movie.tmdbId);
     if (!exists) {
       list.movies.push(movie);
@@ -32,7 +73,7 @@ export const addMovie = async (req, res) => {
 // Remove a movie from the watchlist
 export const deleteMovie = async (req, res) => {
   try {
-    const list = await Watchlist.findOne({ user: req.user });
+    const list = await Watchlist.findOne({ _id: req.params.id, user: req.user });
     if (!list) return res.status(404).json({ message: 'Watchlist not found' });
     list.movies = list.movies.filter(m => m.tmdbId !== req.params.movieId);
     await list.save();
