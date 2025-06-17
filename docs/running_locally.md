@@ -14,8 +14,8 @@ This guide covers getting the Movie Recommendation app running on Android using 
    ```
 4. Clone this repository and install dependencies:
    ```bash
-   git clone <repo-url>
-   cd 3mtt-Capstone
+   git clone https://github.com/3mtt-org/movie-recommendation-app.git
+   cd movie-recommendation-app
    cd server && npm install
    cd ../client && npm install
    ```
@@ -41,8 +41,8 @@ This guide covers getting the Movie Recommendation app running on Android using 
 1. Install **[Node.js](https://nodejs.org/)** and **[Git](https://git-scm.com/)**.
 2. Open **Command Prompt** or **Git Bash** and clone the repository:
    ```bash
-   git clone <repo-url>
-   cd 3mtt-Capstone
+   git clone https://github.com/3mtt-org/movie-recommendation-app.git
+   cd movie-recommendation-app
    ```
 3. Install dependencies for both projects:
    ```bash
@@ -61,3 +61,39 @@ This guide covers getting the Movie Recommendation app running on Android using 
    npm --prefix client run dev
    ```
 6. Navigate to [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Local Production Build
+
+When you're ready to run the project without the development servers:
+
+1. Build the React frontend:
+   ```bash
+   npm --prefix client run build
+   ```
+   The optimized files will be in `client/dist`.
+2. Start the API server using the `start` script:
+   ```bash
+   npm --prefix server start
+   ```
+   Ensure the variables in `server/.env` are set. The backend will run on the
+   port specified by `PORT`.
+3. You can serve the `client/dist` folder with any static file server or
+   configure Express to serve it directly for a simple production setup.
+
+## Deploying to Vercel
+
+1. Push your repository to GitHub (or any git provider).
+2. Log in to [Vercel](https://vercel.com/) and import the project from GitHub.
+3. Set the `VITE_API_URL` environment variable to the URL of your backend.
+4. Vercel will build the React app automatically on each deploy.
+
+## Deploying to Render
+
+1. Create a new Web Service on [Render](https://render.com/) and connect your
+   GitHub repository.
+2. Set the `MONGO_URI`, `JWT_SECRET` and `TMDB_API_KEY` environment variables
+   in the Render dashboard.
+3. The start command should be `npm start` and the root directory should be
+   `server`.
+4. Once deployed, update `VITE_API_URL` on Vercel (or in your local `.env` file)
+   to point to the Render service URL.
