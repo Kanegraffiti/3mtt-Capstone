@@ -58,9 +58,15 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `GET /movies/:id` - movie details
 
 ## Deployment
-- **Frontend** can be deployed to **Vercel**. Configure the `VITE_API_URL` environment variable on Vercel so the React app knows the Render backend URL.
-- **Backend** can be deployed to **Render**. Set environment variables `MONGO_URI`, `JWT_SECRET`, and `TMDB_API_KEY` in the Render dashboard.
-- Example GitHub Actions workflow files can be added to automate deployment.
+1. Build the PWA assets:
+   ```bash
+   npm --prefix client run build
+   ```
+   The build output in `client/dist` includes the generated `manifest.webmanifest` and service worker.
+2. Deploy the **frontend** to **Vercel** and set the `VITE_API_URL` environment variable so the React app can reach the Render backend.
+3. Deploy the **backend** to **Render** with environment variables `MONGO_URI`, `JWT_SECRET`, and `TMDB_API_KEY` configured.
+   Vercel will automatically run the build script when deploying.
+4. Optional GitHub Actions workflows can be added to automate deployments.
 
 ## Documentation
 Beginner friendly guides for running the project locally on Termux and Windows are available in [`docs/running_locally.md`](docs/running_locally.md).

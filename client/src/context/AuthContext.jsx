@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.get('/users/profile', { headers: { Authorization: `Bearer ${token}` }})
+      axios
+        .get('/users/profile', { headers: { Authorization: `Bearer ${token}` } })
         .then(res => setUser(res.data))
         .catch(() => setUser(null));
     }
@@ -18,7 +19,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     const res = await axios.post('/auth/login', { email, password });
     localStorage.setItem('token', res.data.token);
-    const profile = await axios.get('/users/profile', { headers: { Authorization: `Bearer ${res.data.token}` }});
+    const profile = await axios.get('/users/profile', {
+      headers: { Authorization: `Bearer ${res.data.token}` }
+    });
     setUser(profile.data);
   };
 
@@ -29,7 +32,11 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = async (name, email) => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    const res = await axios.put('/users/profile', { name, email }, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await axios.put(
+      '/users/profile',
+      { name, email },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
     setUser(res.data);
   };
 
@@ -37,14 +44,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('token');
     setUser(null);
   };
-  
-  return (
-return (
-  <AuthContext.Provider value={{ user, login, register, logout, updateProfile, setUser }}>
-    {children}
-  </AuthContext.Provider>
-);
 
+  return (
+    <AuthContext.Provider
+      value={{ user, login, register, logout, updateProfile, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
