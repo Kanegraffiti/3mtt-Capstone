@@ -40,6 +40,7 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `POST /auth/login` - obtain JWT token  
 - `GET /movies/search?query=` - search movies via TMDB  
 - `GET /movies/trending` - trending movies  
+- `GET /movies/recommendations` - personalized recommendations (requires auth)  
 - `GET /users/profile` - get current user profile (requires auth)  
 - `PUT /users/profile` - update the authenticated user's name and email  
 - `POST /watchlist` - create a new watchlist (requires auth)  
@@ -50,7 +51,7 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - `DELETE /watchlist/:id/movies/:movieId` - remove movie from watchlist  
 - `POST /reviews/:movieId` - create a movie review (requires auth)  
 - `GET /reviews/:movieId` - list reviews for a movie  
-- `GET /movies/:id` - movie details
+- `GET /movies/:id` - movie details  
 
 ## Deployment
 - **Frontend** can be deployed to **Vercel**. Configure the `VITE_API_URL` environment variable on Vercel so the React app knows the Render backend URL.
