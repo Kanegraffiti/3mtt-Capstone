@@ -1,5 +1,13 @@
 # Movie Recommendation App (MERN)
 
+[![Termux](https://img.shields.io/badge/Termux-used-brightgreen)](#)
+[![Android](https://img.shields.io/badge/Android-built-blue)](#)
+[![React](https://img.shields.io/badge/React-frontend-blue)](#)
+[![Express](https://img.shields.io/badge/Express-backend-lightgrey)](#)
+[![MongoDB](https://img.shields.io/badge/MongoDB-database-green)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-9cf)](#)
+[![Project Status](https://img.shields.io/badge/Progress-40%25-yellow)](#)
+
 This is a full-stack movie recommendation application built with the MERN stack. The frontend uses **React** with **Tailwind CSS** for styling and the backend is an **Express** API connected to **MongoDB**. Movie data is fetched from the [TMDB API](https://www.themoviedb.org/).
 
 ## Features
@@ -8,6 +16,11 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - Save movies to personal watchlists (multiple lists supported)
 - Rate and review movies
 - Responsive mobile‑first UI built with React and Tailwind CSS
+
+## Project Status
+The app is still in early development. It works on Termux and Android,
+and most core features are in place. MongoDB integration is coming
+soon, so we estimate the project is about **40% complete**.
 
 ## Setup
 1. Clone the repository and install dependencies for both `server` and `client`:
