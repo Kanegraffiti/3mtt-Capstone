@@ -7,6 +7,9 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-database-green)](#)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-9cf)](#)
 [![Project Status](https://img.shields.io/badge/Progress-40%25-yellow)](#)
+[![Build Status](https://github.com/3mtt-org/movie-recommendation-app/actions/workflows/node.yml/badge.svg)](https://github.com/3mtt-org/movie-recommendation-app/actions)
+[![Render](https://img.shields.io/badge/Render-deployed-brightgreen)](#)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-blue)](#)
 
 This is a full-stack movie recommendation application built with the MERN stack. The frontend uses **React** with **Tailwind CSS** for styling and the backend is an **Express** API connected to **MongoDB**. Movie data is fetched from the [TMDB API](https://www.themoviedb.org/).
 
