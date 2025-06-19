@@ -34,23 +34,34 @@ jobs:
         run: npm test --if-present
         working-directory: client
 
-      # Trigger Render deployment if the deploy hook URL is configured
-      # Set the `RENDER_DEPLOY_HOOK_URL` secret in your repository with the
-      # Deploy Hook URL from Render.
+      # Explain how to configure Render deploy hook
+      - name: Render deploy hook instructions
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.RENDER_DEPLOY_HOOK_URL == ''
+        run: |
+          echo "Automatic backend deployment is disabled."
+          echo "Set the RENDER_DEPLOY_HOOK_URL secret with the Deploy Hook URL from Render"
+          echo "in GitHub -> Settings -> Secrets -> Actions to enable auto deploy."
+
       - name: Deploy backend to Render
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$DEPLOY_HOOK_URL" ]; then
-            echo "::error::RENDER_DEPLOY_HOOK_URL secret is not set."
-            echo "Add your Render deploy hook URL in the repository secrets."
-            exit 1
+            echo "RENDER_DEPLOY_HOOK_URL secret is not set. Skipping Render deployment."
+          else
+            echo "Triggering Render deploy hook"
+            curl -X POST "$DEPLOY_HOOK_URL"
           fi
-          curl -X POST "$DEPLOY_HOOK_URL"
+
+      - name: Vercel deploy instructions
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && (secrets.VERCEL_TOKEN == '' || secrets.VERCEL_PROJECT_ID == '')
+        run: |
+          echo "Automatic frontend deployment is disabled."
+          echo "Set VERCEL_TOKEN and VERCEL_PROJECT_ID secrets in GitHub to enable it."
 
       - name: Deploy frontend to Vercel
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_PROJECT_ID != ''
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
