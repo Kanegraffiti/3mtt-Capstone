@@ -13,11 +13,12 @@ const Home = () => {
   const [genre, setGenre] = useState('');
   const [year, setYear] = useState('');
   const [sortBy, setSortBy] = useState('');
+  const [page, setPage] = useState(1);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    axios.get('/movies/trending').then(res => setMovies(res.data.results));
-  }, []);
+    axios.get(`/movies/trending?page=${page}`).then(res => setMovies(res.data.results));
+  }, [page]);
 
   useEffect(() => {
     if (!user) {
@@ -91,6 +92,21 @@ const Home = () => {
       )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {movies.map(m => <MovieCard key={m.id} movie={m} />)}
+      </div>
+      <div className="mt-4 flex justify-center items-center gap-1 flex-wrap">
+        <button onClick={() => setPage(p => Math.max(1, p - 1))}>&lt;</button>
+        <div className="overflow-x-auto flex gap-1 max-w-full">
+          {Array.from({ length: 100 }, (_, i) => i + 1).map(num => (
+            <button
+              key={num}
+              onClick={() => setPage(num)}
+              className={num === page ? 'font-bold underline' : ''}
+            >
+              {num}
+            </button>
+          ))}
+        </div>
+        <button onClick={() => setPage(p => Math.min(100, p + 1))}>&gt;</button>
       </div>
     </div>
   );

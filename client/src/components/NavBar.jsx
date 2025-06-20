@@ -9,7 +9,7 @@ const slideDown = keyframes`
 `;
 
 const Bar = styled.nav`
-  background: linear-gradient(to right, rgba(192,38,211,0.9), rgba(6,182,212,0.9));
+  background: linear-gradient(to right, #9b5de5, #52057b);
   padding: 1rem;
   display: flex;
   justify-content: space-between;
