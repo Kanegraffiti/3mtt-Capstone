@@ -36,6 +36,7 @@ const MovieDetail = () => {
   const { user } = useContext(AuthContext);
   const [movie, setMovie] = useState(null);
   const [videos, setVideos] = useState([]);
+  const [providers, setProviders] = useState([]);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [reviews, setReviews] = useState([]);
@@ -43,6 +44,10 @@ const MovieDetail = () => {
   useEffect(() => {
     axios.get(`/movies/${id}`).then(res => setMovie(res.data));
     axios.get(`/movies/${id}/videos`).then(res => setVideos(res.data.results || []));
+    axios.get(`/movies/${id}/providers`).then(res => {
+      const prov = Object.values(res.data.results?.US?.flatrate || []);
+      setProviders(prov);
+    });
     axios.get(`/reviews/${id}`).then(res => setReviews(res.data));
   }, [id]);
 
@@ -84,6 +89,15 @@ const MovieDetail = () => {
         />
       )}
       {user && <button onClick={addToWatchlist} style={{ background: '#3b82f6', padding: '0.5rem 1rem' }}>Add to Watchlist</button>}
+      {providers.length > 0 && (
+        <div className="flex gap-2 my-2">
+          {providers.map(p => (
+            <a key={p.provider_id} href={p.link || '#'} target="_blank" rel="noopener noreferrer">
+              <img src={`https://image.tmdb.org/t/p/w45${p.logo_path}`} alt={p.provider_name} />
+            </a>
+          ))}
+        </div>
+      )}
       <p>{movie.overview}</p>
       <ReviewSection>
         <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Reviews</h3>

@@ -1,15 +1,14 @@
-# Movie Recommendation App (MERN)
+# MyMovies
 
-[![Termux](https://img.shields.io/badge/Termux-used-brightgreen)](#)
-[![Android](https://img.shields.io/badge/Android-built-blue)](#)
 [![React](https://img.shields.io/badge/React-frontend-blue)](#)
 [![Express](https://img.shields.io/badge/Express-backend-lightgrey)](#)
 [![MongoDB](https://img.shields.io/badge/MongoDB-database-green)](#)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-9cf)](#)
-[![Project Status](https://img.shields.io/badge/Progress-40%25-yellow)](#)
 [![Build Status](https://github.com/3mtt-org/movie-recommendation-app/actions/workflows/node.yml/badge.svg)](https://github.com/3mtt-org/movie-recommendation-app/actions)
-[![Render](https://img.shields.io/badge/Render-deployed-brightgreen)](#)
-[![Vercel](https://img.shields.io/badge/Vercel-deployed-blue)](#)
+[![Render](https://img.shields.io/badge/Render-live-success)](https://threemtt-capstone.onrender.com)
+[![Vercel](https://img.shields.io/badge/Vercel-live-success)](https://threemtt-capstone.vercel.app)
+
+![Demo](docs/demo.gif)
 
 This is a full-stack movie recommendation application built with the MERN stack. The frontend uses **React** with **Tailwind CSS** for styling and the backend is an **Express** API connected to **MongoDB**. Movie data is fetched from the [TMDB API](https://www.themoviedb.org/).
 

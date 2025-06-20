@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
+import Hero from '../components/Hero.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Home = () => {
@@ -52,6 +53,7 @@ const Home = () => {
 
   return (
     <div className="p-4">
+      <Hero />
       <form onSubmit={search} className="mb-4 flex flex-wrap gap-2 items-center">
         <input
           className="flex-grow p-2 text-black"
