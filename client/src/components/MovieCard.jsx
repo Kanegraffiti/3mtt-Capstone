@@ -1,32 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext.jsx';
 
-const Card = styled(Link)`
-  background: #374151;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  display: block;
-  position: relative;
-  text-decoration: none;
-  color: inherit;
-`;
-
-const Title = styled.h3`
-  margin-top: 0.5rem;
-  text-align: center;
-`;
-
-const AddButton = styled.button`
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: #3b82f6;
-  font-size: 0.75rem;
-  padding: 0 0.25rem;
-`;
 const MovieCard = ({ movie }) => {
   const { user } = useContext(AuthContext);
 
@@ -39,11 +15,11 @@ const MovieCard = ({ movie }) => {
   };
 
   return (
-    <Card to={`/movie/${movie.id}`}> 
-      <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-      <Title>{movie.title}</Title>
-      {user && <AddButton onClick={add}>Add</AddButton>}
-    </Card>
+    <Link to={`/movie/${movie.id}`} className="bg-surface p-2 rounded relative block transition duration-300 hover:scale-105 hover:shadow-lg">
+      <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} className="mx-auto" />
+      <h3 className="mt-2 text-center text-sm">{movie.title}</h3>
+      {user && <button onClick={add} className="absolute top-1 right-1 bg-blue-500 text-xs px-1">Add</button>}
+    </Link>
   );
 };
 export default MovieCard;

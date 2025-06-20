@@ -25,6 +25,9 @@ function App() {
         <Route path="/list/:id" element={<SharedList />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
       </Routes>
+      <footer className="text-center py-4 text-sm opacity-80">
+        <a href="https://github.com/kelechinx" target="_blank" rel="noopener noreferrer" className="underline">Built with ❤️ by Kelechi Nwankwo</a>
+      </footer>
     </AuthProvider>
   );
 }

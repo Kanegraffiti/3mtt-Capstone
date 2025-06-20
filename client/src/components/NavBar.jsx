@@ -9,7 +9,7 @@ const slideDown = keyframes`
 `;
 
 const Bar = styled.nav`
-  background: #1f2937;
+  background: linear-gradient(to right, rgba(192,38,211,0.9), rgba(6,182,212,0.9));
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -30,7 +30,7 @@ const NavBar = () => {
   const { user, logout } = useContext(AuthContext);
   return (
     <Bar>
-      <Brand to="/">MovieApp</Brand>
+      <Brand to="/">MyMovies</Brand>
       <Links>
         <Link to="/">Home</Link>
         {user ? (

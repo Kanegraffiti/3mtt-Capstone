@@ -55,6 +55,17 @@ export const movieVideos = async (req, res) => {
   }
 };
 
+export const movieProviders = async (req, res) => {
+  try {
+    const query = new URLSearchParams({ api_key: process.env.TMDB_API_KEY });
+    const response = await fetch(`${TMDB_BASE}/movie/${req.params.id}/watch/providers?${query}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const recommendedMovies = async (req, res) => {
   try {
     // Fetch movies from user's watchlists and rated movies
