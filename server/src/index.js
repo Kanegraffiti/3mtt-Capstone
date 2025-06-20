@@ -1,14 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import movieRoutes from './routes/movies.js';
 import watchlistRoutes from './routes/watchlist.js';
 import reviewRoutes from './routes/reviews.js';
-
-dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
