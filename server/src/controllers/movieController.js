@@ -24,10 +24,15 @@ export const searchMovies = async (req, res) => {
 
 export const trendingMovies = async (req, res) => {
   try {
-    const query = new URLSearchParams({ api_key: process.env.TMDB_API_KEY });
-    const response = await fetch(`${TMDB_BASE}/trending/movie/week?${query}`);
-    const data = await response.json();
-    res.json(data);
+    const page = parseInt(req.query.page) || 1;
+    const query1 = new URLSearchParams({ api_key: process.env.TMDB_API_KEY, page });
+    const resp1 = await fetch(`${TMDB_BASE}/trending/movie/week?${query1}`);
+    const data1 = await resp1.json();
+    const query2 = new URLSearchParams({ api_key: process.env.TMDB_API_KEY, page: page + 1 });
+    const resp2 = await fetch(`${TMDB_BASE}/trending/movie/week?${query2}`);
+    const data2 = await resp2.json();
+    const results = [...(data1.results || []), ...(data2.results || [])].slice(0, 30);
+    res.json({ results });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
