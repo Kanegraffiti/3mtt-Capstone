@@ -80,6 +80,8 @@ Then open the Vite URL in your mobile browser. MongoDB will need an external con
 
 ---
 
+## UI Screenshots
+
 <!-- Home Screen -->
 <img src="docs/screenshots/home-mobile.png" alt="Home mobile" style="border-radius: 12px;" />
 <img src="docs/screenshots/home-tablet.png" alt="Home tablet" style="border-radius: 12px;" />
