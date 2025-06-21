@@ -5,7 +5,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Profile from './pages/Profile.jsx';
 import Library from './pages/Library.jsx';
-import MovieDetail from './pages/MovieDetail.jsx';
+import MovieDetails from './pages/MovieDetails.jsx';
 import SharedList from './pages/SharedList.jsx';
 import NotFound from './pages/NotFound.jsx';
 import { Routes, Route } from 'react-router-dom';
@@ -27,7 +27,7 @@ function App() {
           <Route path="/library" element={<Library />} />
         </Route>
         <Route path="/list/:id" element={<SharedList />} />
-        <Route path="/movie/:id" element={<MovieDetail />} />
+        <Route path="/movie/:id" element={<MovieDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       </div>
