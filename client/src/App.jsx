@@ -32,7 +32,7 @@ function App() {
       </Routes>
       </div>
       <footer className="fixed bottom-0 left-0 w-full bg-gray-800 text-center py-4 text-sm opacity-80">
-        <a href="https://github.com/kelechinx" target="_blank" rel="noopener noreferrer" className="underline">Built with ❤️ by Kelechi Nwankwo</a>
+        <a href="https://github.com/Kanegraffiti" target="_blank" rel="noopener noreferrer" className="underline">Built with ❤️ by Kelechi Nwankwo</a>
       </footer>
     </AuthProvider>
   );
