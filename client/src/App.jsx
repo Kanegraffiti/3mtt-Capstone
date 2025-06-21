@@ -7,6 +7,7 @@ import Profile from './pages/Profile.jsx';
 import Library from './pages/Library.jsx';
 import MovieDetail from './pages/MovieDetail.jsx';
 import SharedList from './pages/SharedList.jsx';
+import NotFound from './pages/NotFound.jsx';
 import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -27,6 +28,7 @@ function App() {
         </Route>
         <Route path="/list/:id" element={<SharedList />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       </div>
       <footer className="fixed bottom-0 left-0 w-full bg-gray-800 text-center py-4 text-sm opacity-80">
