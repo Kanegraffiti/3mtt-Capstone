@@ -1,0 +1,8 @@
+{
+  "name": "Node18-Mongo",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "features": {
+    "ghcr.io/devcontainers/features/mongodb:1": {}
+  },
+  "postCreateCommand": "npm install --prefix server && npm install --prefix client"
+}

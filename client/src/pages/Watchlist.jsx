@@ -39,6 +39,23 @@ const Watchlist = () => {
     });
   };
 
+  const setStatus = async (listId, movieId, status) => {
+    const token = localStorage.getItem('token');
+    const res = await axios.put(
+      `/watchlist/${listId}/movies/${movieId}/status`,
+      { status },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setLists(lists.map(l =>
+      l._id === listId ? {
+        ...l,
+        movies: l.movies.map(m =>
+          m.tmdbId === movieId ? { ...m, status: res.data.status } : m
+        )
+      } : l
+    ));
+  };
+
   const delList = async (id) => {
     const token = localStorage.getItem('token');
     await axios.delete(`/watchlist/${id}`, { headers: { Authorization: `Bearer ${token}` } });
@@ -72,6 +89,15 @@ const Watchlist = () => {
               <div key={m.tmdbId} style={{ position: 'relative' }}>
                 <MovieCard movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }} />
                 <button onClick={() => removeMovie(list._id, m.tmdbId)} style={{ position: 'absolute', top: '0.5rem', right: '0.5rem', background: '#ef4444', fontSize: '0.875rem', padding: '0 0.25rem' }}>Remove</button>
+                <select
+                  value={m.status}
+                  onChange={e => setStatus(list._id, m.tmdbId, e.target.value)}
+                  style={{ position: 'absolute', bottom: '0.5rem', left: '0.5rem', color: 'black', fontSize: '0.75rem' }}
+                >
+                  <option value="To Watch">To Watch</option>
+                  <option value="Watching">Watching</option>
+                  <option value="Watched">Watched</option>
+                </select>
               </div>
             ))}
           </Slider>

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
@@ -14,11 +14,41 @@ const Home = () => {
   const [year, setYear] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [page, setPage] = useState(1);
+  const loader = useRef(null);
+  const [hasMore, setHasMore] = useState(true);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    axios.get(`/movies/trending?page=${page}`).then(res => setMovies(res.data.results));
+    const fetchMovies = async () => {
+      try {
+        const res = await axios.get(`/movies/trending?page=${page}`);
+        const newMovies = res.data.results || [];
+        setMovies(prev => [...prev, ...newMovies]);
+        if (newMovies.length > 0) {
+          localStorage.setItem('cache_trending', JSON.stringify(newMovies.slice(0, 20)));
+        }
+        if (page >= 25 || newMovies.length === 0) setHasMore(false);
+      } catch (err) {
+        const cached = localStorage.getItem('cache_trending');
+        if (cached && movies.length === 0) {
+          setMovies(JSON.parse(cached));
+        }
+        setHasMore(false);
+      }
+    };
+    if (hasMore) fetchMovies();
   }, [page]);
+
+  useEffect(() => {
+    if (!hasMore) return;
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setPage(p => p + 1);
+      }
+    });
+    if (loader.current) observer.observe(loader.current);
+    return () => observer.disconnect();
+  }, [hasMore]);
 
   useEffect(() => {
     if (!user) {
@@ -93,21 +123,7 @@ const Home = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {movies.map(m => <MovieCard key={m.id} movie={m} />)}
       </div>
-      <div className="mt-4 flex justify-center items-center gap-1 flex-wrap">
-        <button onClick={() => setPage(p => Math.max(1, p - 1))}>&lt;</button>
-        <div className="overflow-x-auto flex gap-1 max-w-full">
-          {Array.from({ length: 100 }, (_, i) => i + 1).map(num => (
-            <button
-              key={num}
-              onClick={() => setPage(num)}
-              className={num === page ? 'font-bold underline' : ''}
-            >
-              {num}
-            </button>
-          ))}
-        </div>
-        <button onClick={() => setPage(p => Math.min(100, p + 1))}>&gt;</button>
-      </div>
+      {hasMore && <div ref={loader} className="py-8 text-center">Loading...</div>}
     </div>
   );
 };

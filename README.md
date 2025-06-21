@@ -1,12 +1,10 @@
 # MyMovies
 
-[![React](https://img.shields.io/badge/React-frontend-blue)](#)
-[![Express](https://img.shields.io/badge/Express-backend-lightgrey)](#)
-[![MongoDB](https://img.shields.io/badge/MongoDB-database-green)](#)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-9cf)](#)
-[![Build Status](https://github.com/3mtt-org/movie-recommendation-app/actions/workflows/node.yml/badge.svg)](https://github.com/3mtt-org/movie-recommendation-app/actions)
-[![Render](https://img.shields.io/badge/Render-live-success)](https://threemtt-capstone.onrender.com)
-[![Vercel](https://img.shields.io/badge/Vercel-live-success)](https://threemtt-capstone.vercel.app)
+| Live Links | |
+| --- | --- |
+| **Frontend** | [https://3mtt-capstone-one.vercel.app](https://3mtt-capstone-one.vercel.app) |
+| **Backend** | [https://threemtt-capstone.onrender.com](https://threemtt-capstone.onrender.com) |
+| **License** | MIT |
 
 ![Demo](docs/demo.gif)
 
@@ -18,11 +16,6 @@ This is a full-stack movie recommendation application built with the MERN stack.
 - Save movies to personal watchlists (multiple lists supported)
 - Rate and review movies
 - Responsive mobile‑first UI built with React and Tailwind CSS
-
-## Project Status
-The app is still in early development. It works on Termux and Android,
-and most core features are in place. MongoDB integration is coming
-soon, so we estimate the project is about **40% complete**.
 
 ## Setup
 1. Clone the repository and install dependencies for both `server` and `client`:
