@@ -1,4 +1,4 @@
-import NavBar from './components/NavBar.jsx';
+import Header from './components/Header.jsx';
 import OfflineBanner from './components/OfflineBanner.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
@@ -15,7 +15,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 function App() {
   return (
     <AuthProvider>
-      <NavBar />
+      <Header />
       <OfflineBanner />
       <div className="pt-16 pb-20">
       <Routes>
