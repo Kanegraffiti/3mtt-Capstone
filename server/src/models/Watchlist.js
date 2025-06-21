@@ -8,6 +8,7 @@ const watchlistSchema = new mongoose.Schema({
     tmdbId: String,
     title: String,
     posterPath: String,
+    status: { type: String, enum: ['To Watch','Watching','Watched'], default: 'To Watch' },
   }],
 }, { timestamps: true });
 

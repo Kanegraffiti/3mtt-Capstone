@@ -13,6 +13,11 @@ const Bar = styled.nav`
   padding: 1rem;
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
   animation: ${slideDown} 0.3s ease-out;
 `;
 

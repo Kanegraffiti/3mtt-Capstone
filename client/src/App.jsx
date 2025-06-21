@@ -1,4 +1,5 @@
 import NavBar from './components/NavBar.jsx';
+import OfflineBanner from './components/OfflineBanner.jsx';
 import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
@@ -14,6 +15,7 @@ function App() {
   return (
     <AuthProvider>
       <NavBar />
+      <OfflineBanner />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

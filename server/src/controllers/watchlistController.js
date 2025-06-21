@@ -61,7 +61,7 @@ export const addMovie = async (req, res) => {
     if (!list) return res.status(404).json({ message: 'Watchlist not found' });
     const exists = list.movies.some(m => m.tmdbId === movie.tmdbId);
     if (!exists) {
-      list.movies.push(movie);
+      list.movies.push({ ...movie, status: movie.status || 'To Watch' });
       await list.save();
     }
     res.status(201).json(list.movies);
@@ -78,6 +78,21 @@ export const deleteMovie = async (req, res) => {
     list.movies = list.movies.filter(m => m.tmdbId !== req.params.movieId);
     await list.save();
     res.json(list.movies);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const updateMovieStatus = async (req, res) => {
+  const { status } = req.body;
+  try {
+    const list = await Watchlist.findOne({ _id: req.params.id, user: req.user });
+    if (!list) return res.status(404).json({ message: 'Watchlist not found' });
+    const movie = list.movies.find(m => m.tmdbId === req.params.movieId);
+    if (!movie) return res.status(404).json({ message: 'Movie not found' });
+    movie.status = status;
+    await list.save();
+    res.json(movie);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
