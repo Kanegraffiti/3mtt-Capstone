@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import { AuthContext } from '../context/AuthContext.jsx';
 import Rating from '../components/common/Rating.jsx';
 import Placeholder from '../components/common/Placeholder.jsx';
+import Spinner from '../components/common/Spinner.jsx';
+import NotFound from './NotFound.jsx';
+import { BASE_URL } from '../api.js';
 
 const Container = styled.div`
   padding: 1rem;
@@ -40,15 +43,38 @@ const MovieDetail = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    axios.get(`/movies/${id}`).then(res => setMovie(res.data));
-    axios.get(`/movies/${id}/videos`).then(res => setVideos(res.data.results || []));
-    axios.get(`/movies/${id}/providers`).then(res => {
-      const prov = Object.values(res.data.results?.US?.flatrate || []);
-      setProviders(prov);
-    });
-    axios.get(`/reviews/${id}`).then(res => setReviews(res.data));
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setNotFound(false);
+        const res = await fetch(`${BASE_URL}/movies/${id}`);
+        if (res.status === 404) {
+          setNotFound(true);
+          return;
+        }
+        const data = await res.json();
+        setMovie(data);
+
+        const [vid, prov, rev] = await Promise.all([
+          axios.get(`/movies/${id}/videos`),
+          axios.get(`/movies/${id}/providers`),
+          axios.get(`/reviews/${id}`)
+        ]);
+        setVideos(vid.data.results || []);
+        const provArr = Object.values(prov.data.results?.US?.flatrate || []);
+        setProviders(provArr);
+        setReviews(rev.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, [id]);
 
   const addToWatchlist = async () => {
@@ -75,11 +101,19 @@ const MovieDetail = () => {
     setRating(0);
   };
 
-  if (!movie) return (
-    <div style={{ padding: '1rem' }}>
-      <Placeholder height="2rem" />
-    </div>
-  );
+  if (loading) {
+    return <Spinner />;
+  }
+  if (notFound) {
+    return <NotFound />;
+  }
+  if (!movie) {
+    return (
+      <div style={{ padding: '1rem' }}>
+        <Placeholder height="2rem" />
+      </div>
+    );
+  }
   const trailer = videos.find(v => v.site === 'YouTube' && v.type === 'Trailer');
 
   return (
