@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../api.js';
 import MovieCard from '../components/MovieCard.jsx';
 
 const SharedList = () => {
@@ -8,7 +8,7 @@ const SharedList = () => {
   const [list, setList] = useState(null);
 
   useEffect(() => {
-    axios.get(`/watchlist/shared/${id}`)
+    api.get(`watchlist/shared/${id}`)
       .then(res => setList(res.data))
       .catch(() => setList(null));
   }, [id]);

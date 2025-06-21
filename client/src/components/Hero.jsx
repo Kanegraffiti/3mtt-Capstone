@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from '../api.js';
 
 const Hero = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    axios.get('/movies/trending?page=1').then(res => setMovies(res.data.results.slice(0,10)));
+    api.get('movies/trending?page=1').then(res => setMovies(res.data.results.slice(0,10)));
   }, []);
 
   return (

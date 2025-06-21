@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import { api } from '../api.js';
 import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
@@ -15,13 +15,13 @@ const Library = () => {
   useEffect(() => {
     if (!user) return;
     const token = localStorage.getItem('token');
-    axios.get('/watchlist', { headers: { Authorization: `Bearer ${token}` } })
+    api.get('watchlist', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setLists(res.data))
       .catch(() => setLists([]));
-    axios.get('/favorites', { headers: { Authorization: `Bearer ${token}` } })
+    api.get('favorites', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setFavorites(res.data.movies || []))
       .catch(() => setFavorites([]));
-    axios.get('/movies/recommendations', { headers: { Authorization: `Bearer ${token}` } })
+    api.get('movies/recommendations', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setRecommended(res.data.results || []))
       .catch(() => setRecommended([]));
   }, [user]);
@@ -29,7 +29,7 @@ const Library = () => {
   const create = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
-    const res = await axios.post('/watchlist', { name, description }, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await api.post('watchlist', { name, description }, { headers: { Authorization: `Bearer ${token}` } });
     setLists([...lists, res.data]);
     setUser({ ...user, watchlists: [...(user.watchlists || []), res.data] });
     setName('');
@@ -39,7 +39,7 @@ const Library = () => {
 
   const removeMovie = async (listId, movieId) => {
     const token = localStorage.getItem('token');
-    const res = await axios.delete(`/watchlist/${listId}/movies/${movieId}`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await api.delete(`watchlist/${listId}/movies/${movieId}`, { headers: { Authorization: `Bearer ${token}` } });
     setLists(lists.map(l => l._id === listId ? { ...l, movies: res.data } : l));
     setUser({
       ...user,
@@ -49,7 +49,7 @@ const Library = () => {
 
   const setStatus = async (listId, movieId, status) => {
     const token = localStorage.getItem('token');
-    const res = await axios.put(
+    const res = await api.put(
       `/watchlist/${listId}/movies/${movieId}/status`,
       { status },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -66,7 +66,7 @@ const Library = () => {
 
   const delList = async (id) => {
     const token = localStorage.getItem('token');
-    await axios.delete(`/watchlist/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+    await api.delete(`watchlist/${id}`, { headers: { Authorization: `Bearer ${token}` } });
     setLists(lists.filter(l => l._id !== id));
     setUser({ ...user, watchlists: user.watchlists.filter(l => l._id !== id) });
   };

@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { api } from '../api.js';
 
 export const AuthContext = createContext(null);
 
@@ -9,8 +9,8 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios
-        .get('/users/profile', { headers: { Authorization: `Bearer ${token}` } })
+      api
+        .get('users/profile', { headers: { Authorization: `Bearer ${token}` } })
         .then(res => setUser(res.data))
         .catch(() => setUser(null));
     }
@@ -18,9 +18,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('/auth/login', { email, password });
+      const res = await api.post('auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
-      const profile = await axios.get('/users/profile', {
+      const profile = await api.get('users/profile', {
         headers: { Authorization: `Bearer ${res.data.token}` }
       });
       setUser(profile.data);
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      await axios.post('/auth/register', { name, email, password });
+      await api.post('auth/register', { name, email, password });
       return true;
     } catch (err) {
       console.error('Registration failed:', err);
@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
-      const res = await axios.put(
-        '/users/profile',
+      const res = await api.put(
+        'users/profile',
         { name, email },
         { headers: { Authorization: `Bearer ${token}` } }
       );
