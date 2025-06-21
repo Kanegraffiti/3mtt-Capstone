@@ -80,19 +80,19 @@ Then open the Vite URL in your mobile browser. MongoDB will need an external con
 
 ---
 
-## UI Screenshots
+## Mobile and Tablet UI Screenshots
 
 <!-- Home Screen -->
-<img src="docs/screenshots/home-mobile.png" alt="Home mobile" style="border-radius: 12px;" />
-<img src="docs/screenshots/home-tablet.png" alt="Home tablet" style="border-radius: 12px;" />
+<img src="docs/screenshots/home-mobile.png" alt="Mobile 1" style="border-radius: 12px;" />
+<img src="docs/screenshots/home-tablet.jpg" alt="Tablet 1" style="border-radius: 12px;" />
 
 <!-- Login Screen -->
-<img src="docs/screenshots/login-mobile.png" alt="Login mobile" style="border-radius: 12px;" />
-<img src="docs/screenshots/login-tablet.png" alt="Login tablet" style="border-radius: 12px;" />
+<img src="docs/screenshots/movies-mobile.png" alt="Mobile 2" style="border-radius: 12px;" />
+<img src="docs/screenshots/login-tablet.jpg" alt="Tablet 2" style="border-radius: 12px;" />
 
 <!-- Movie Details -->
-<img src="docs/screenshots/details-mobile.png" alt="Details mobile" style="border-radius: 12px;" />
-<img src="docs/screenshots/details-tablet.png" alt="Details tablet" style="border-radius: 12px;" />
+<img src="docs/screenshots/details-mobile.png" alt="Mobile 3" style="border-radius: 12px;" />
+<img src="docs/screenshots/details-tablet.jpg" alt="Tablet 3" style="border-radius: 12px;" />
 
 ---
 
