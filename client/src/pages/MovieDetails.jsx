@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import { api } from '../api.js';
 import Spinner from '../components/common/Spinner.jsx';
 
 const Container = styled.div`
@@ -18,24 +19,33 @@ const Title = styled.h2`
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchMovie = async () => {
+    const fetchData = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.REACT_APP_TMDB_API_KEY}`
+        const [movieRes, videoRes] = await Promise.all([
+          axios.get(
+            `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.REACT_APP_TMDB_API_KEY}`
+          ),
+          api.get(`movies/${id}/videos`),
+        ]);
+        setMovie(movieRes.data);
+        const ytVideo = (videoRes.data.results || []).find(
+          (v) => v.site === 'YouTube'
         );
-        setMovie(data);
+        setVideo(ytVideo || null);
       } catch (err) {
         console.error(err);
         setMovie(null);
+        setVideo(null);
       } finally {
         setLoading(false);
       }
     };
-    fetchMovie();
+    fetchData();
   }, [id]);
 
   if (loading) {
@@ -49,10 +59,12 @@ const MovieDetails = () => {
   return (
     <Container>
       <Title>{movie.title}</Title>
-      {movie.poster_path && (
-        <img
-          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-          alt={movie.title}
+      {video && (
+        <iframe
+          title="Trailer"
+          src={`https://www.youtube.com/embed/${video.key}`}
+          allowFullScreen
+          className="w-full aspect-video"
         />
       )}
       <p>{movie.overview}</p>
