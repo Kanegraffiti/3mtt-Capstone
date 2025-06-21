@@ -80,34 +80,17 @@ Then open the Vite URL in your mobile browser. MongoDB will need an external con
 
 ---
 
-## Screenshots
-
-Below are placeholders for application screenshots. Add your images in a folder called `docs/screenshots/` with the following names to display them:
-
-```
-docs/screenshots/home-mobile.png
-docs/screenshots/home-tablet.png
-docs/screenshots/login-mobile.png
-docs/screenshots/login-tablet.png
-docs/screenshots/details-mobile.png
-docs/screenshots/details-tablet.png
-```
-
-You can then uncomment the Markdown below to show the images.
-
-```markdown
 <!-- Home Screen -->
-<!-- ![Home mobile](docs/screenshots/home-mobile.png) -->
-<!-- ![Home tablet](docs/screenshots/home-tablet.png) -->
+<img src="docs/screenshots/home-mobile.png" alt="Home mobile" style="border-radius: 12px;" />
+<img src="docs/screenshots/home-tablet.png" alt="Home tablet" style="border-radius: 12px;" />
 
 <!-- Login Screen -->
-<!-- ![Login mobile](docs/screenshots/login-mobile.png) -->
-<!-- ![Login tablet](docs/screenshots/login-tablet.png) -->
+<img src="docs/screenshots/login-mobile.png" alt="Login mobile" style="border-radius: 12px;" />
+<img src="docs/screenshots/login-tablet.png" alt="Login tablet" style="border-radius: 12px;" />
 
 <!-- Movie Details -->
-<!-- ![Details mobile](docs/screenshots/details-mobile.png) -->
-<!-- ![Details tablet](docs/screenshots/details-tablet.png) -->
-```
+<img src="docs/screenshots/details-mobile.png" alt="Details mobile" style="border-radius: 12px;" />
+<img src="docs/screenshots/details-tablet.png" alt="Details tablet" style="border-radius: 12px;" />
 
 ---
 
@@ -123,5 +106,9 @@ This project satisfies the following capstone criteria:
 
 Stretch ideas include social features, improved recommendations, movie trailers via the YouTube API and turning the app into a PWA.
 
-Enjoy exploring MyMovies and feel free to build on it!
+---
 
+## Documentation
+Beginner friendly guides for running the project locally on Termux and Windows are available in [`docs/running_locally.md`](docs/running_locally.md).
+
+Enjoy exploring MyMovies and feel free to build on it!

@@ -79,25 +79,40 @@ const MovieDetail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setNotFound(false);
       try {
-        setLoading(true);
-        setNotFound(false);
         const { data } = await api.get(`movies/${id}`);
-        if (!data) {
+        if (!data || data.success === false) {
           setNotFound(true);
           return;
         }
         setMovie(data);
+      } catch (err) {
+        console.error(err);
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
 
-        const [vid, prov, rev] = await Promise.all([
+      try {
+        const [vid, prov, rev] = await Promise.allSettled([
           api.get(`movies/${id}/videos`),
           api.get(`movies/${id}/providers`),
           api.get(`reviews/${id}`)
         ]);
-        setVideos(vid.data.results || []);
-        const provArr = Object.values(prov.data.results?.US?.flatrate || []);
-        setProviders(provArr);
-        setReviews(rev.data);
+        if (vid.status === 'fulfilled') {
+          setVideos(vid.value.data.results || []);
+        }
+        if (prov.status === 'fulfilled') {
+          const provArr = Object.values(
+            prov.value.data.results?.US?.flatrate || []
+          );
+          setProviders(provArr);
+        }
+        if (rev.status === 'fulfilled') {
+          setReviews(rev.value.data);
+        }
       } catch (err) {
         console.error(err);
       } finally {
