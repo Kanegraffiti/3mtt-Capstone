@@ -34,7 +34,7 @@ const Profile = () => {
         <button className="w-full bg-blue-500 py-2" type="submit">Update</button>
       </form>
       <div>
-        <h3 className="text-lg mb-2">Watchlists</h3>
+        <h3 className="text-lg mb-2">My Lists</h3>
         {user.watchlists.length === 0 && <p>No watchlists.</p>}
         <ul className="list-disc ml-6">
           {user.watchlists.map(l => (

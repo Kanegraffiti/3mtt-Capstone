@@ -3,6 +3,7 @@
 @tailwind utilities;
 body {
   @apply font-sans bg-background text-white;
+  padding-bottom: 5rem;
 }
 
 @keyframes scrollBanner {

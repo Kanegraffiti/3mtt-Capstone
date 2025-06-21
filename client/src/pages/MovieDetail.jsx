@@ -58,6 +58,12 @@ const MovieDetail = () => {
     await axios.post(`/watchlist/${listId}/add`, { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
   };
 
+  const addToFavorites = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    await axios.post('/favorites/add', { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
+  };
+
   const submitReview = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -79,6 +85,8 @@ const MovieDetail = () => {
   return (
     <Container>
       <Title>{movie.title}</Title>
+      <img src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`} alt={movie.title} />
+      <p>Rating: {movie.vote_average}</p>
       {trailer && (
         <iframe
           width="560"
@@ -88,7 +96,12 @@ const MovieDetail = () => {
           allowFullScreen
         />
       )}
-      {user && <button onClick={addToWatchlist} style={{ background: '#3b82f6', padding: '0.5rem 1rem' }}>Add to Watchlist</button>}
+      {user && (
+        <div className="flex gap-2">
+          <button onClick={addToWatchlist} style={{ background: '#3b82f6', padding: '0.5rem 1rem' }}>Add to Watchlist</button>
+          <button onClick={addToFavorites} style={{ background: '#f59e0b', padding: '0.5rem 1rem' }}>Favorite</button>
+        </div>
+      )}
       {providers.length > 0 && (
         <div className="flex gap-2 my-2">
           {providers.map(p => (
