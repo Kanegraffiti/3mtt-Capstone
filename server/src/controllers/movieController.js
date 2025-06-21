@@ -7,14 +7,21 @@ const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 export const searchMovies = async (req, res) => {
   try {
-    const params = new URLSearchParams({
-      api_key: process.env.TMDB_API_KEY,
-      query: req.query.q,
-    });
-    if (req.query.year) params.append('year', req.query.year);
-    if (req.query.genre) params.append('with_genres', req.query.genre);
-    if (req.query.sortBy) params.append('sort_by', req.query.sortBy);
-    const response = await fetch(`${TMDB_BASE}/search/movie?${params}`);
+    const { q, year, genre, sortBy } = req.query;
+    const params = new URLSearchParams({ api_key: process.env.TMDB_API_KEY });
+    if (q) params.append('query', q);
+    if (year) params.append('year', year);
+    if (genre) params.append('with_genres', genre);
+    if (sortBy) params.append('sort_by', sortBy);
+
+    let endpoint = `${TMDB_BASE}/search/movie?${params}`;
+    // If no text query is provided, fall back to discover endpoint so
+    // searching by only genre or year still returns results
+    if (!q) {
+      endpoint = `${TMDB_BASE}/discover/movie?${params}`;
+    }
+
+    const response = await fetch(endpoint);
     const data = await response.json();
     res.json(data);
   } catch (err) {
