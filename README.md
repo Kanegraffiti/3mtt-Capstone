@@ -48,6 +48,7 @@ This is a full-stack movie recommendation application built with the MERN stack.
    ```
    The build output in `client/dist` includes the generated `manifest.webmanifest` and service worker.
 2. Deploy the **frontend** to **Vercel** and set the `VITE_API_URL` environment variable so the React app can reach the Render backend.
+   If this variable isn't provided or accidentally points to `localhost`, the client now falls back to the hosted backend URL.
 3. Deploy the **backend** to **Render** with environment variables `MONGO_URI`, `JWT_SECRET`, and `TMDB_API_KEY` configured.
    Vercel will automatically run the build script when deploying.
 4. Optional GitHub Actions workflows can be added to automate deployments.
