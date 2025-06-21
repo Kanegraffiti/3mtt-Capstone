@@ -4,9 +4,11 @@ import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
 
-const Watchlist = () => {
+const Library = () => {
   const { user, setUser } = useContext(AuthContext);
   const [lists, setLists] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [recommended, setRecommended] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -16,6 +18,12 @@ const Watchlist = () => {
     axios.get('/watchlist', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setLists(res.data))
       .catch(() => setLists([]));
+    axios.get('/favorites', { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => setFavorites(res.data.movies || []))
+      .catch(() => setFavorites([]));
+    axios.get('/movies/recommendations', { headers: { Authorization: `Bearer ${token}` } })
+      .then(res => setRecommended(res.data.results || []))
+      .catch(() => setRecommended([]));
   }, [user]);
 
   const create = async (e) => {
@@ -67,7 +75,31 @@ const Watchlist = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl mb-4">My Watchlists</h2>
+      <h2 className="text-xl mb-4">My Library</h2>
+
+      {favorites.length > 0 && (
+        <div className="mb-8">
+          <h3 className="text-lg mb-2">Favorites</h3>
+          <Slider>
+            {favorites.map(m => (
+              <MovieCard key={m.tmdbId} movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }} />
+            ))}
+          </Slider>
+        </div>
+      )}
+
+      {recommended.length > 0 && (
+        <div className="mb-8">
+          <h3 className="text-lg mb-2">For You</h3>
+          <Slider>
+            {recommended.map(m => (
+              <MovieCard key={m.id} movie={m} />
+            ))}
+          </Slider>
+        </div>
+      )}
+
+      <h3 className="text-lg mb-2">Watchlists</h3>
 
       <form onSubmit={create} className="mb-6 space-x-2">
         <input className="p-1 text-black" value={name} onChange={e => setName(e.target.value)} placeholder="New list name" />
@@ -107,4 +139,4 @@ const Watchlist = () => {
   );
 };
 
-export default Watchlist;
+export default Library;

@@ -9,7 +9,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="overflow-hidden py-8">
+    <div className="overflow-hidden py-8 mt-16">
       <h1 className="text-3xl font-semibold mb-4 text-center">Find Your Next Favorite Movie</h1>
       <div className="banner-container">
         <div className="scroll-banner">
