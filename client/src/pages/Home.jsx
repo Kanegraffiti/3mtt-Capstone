@@ -2,7 +2,8 @@ import { useEffect, useState, useContext, useRef } from 'react';
 import { api } from '../api.js';
 import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
-import Hero from '../components/Hero.jsx';
+import HeroVideo from '../components/HeroVideo.jsx';
+import useInfiniteScroll from '../hooks/useInfiniteScroll.js';
 import { AuthContext } from '../context/AuthContext.jsx';
 
 const Home = () => {
@@ -17,6 +18,9 @@ const Home = () => {
   const loader = useRef(null);
   const [hasMore, setHasMore] = useState(true);
   const { user } = useContext(AuthContext);
+
+  const loadMore = () => setPage(p => p + 1);
+  useInfiniteScroll({ loader, hasMore, loadMore });
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -39,16 +43,6 @@ const Home = () => {
     if (hasMore) fetchMovies();
   }, [page]);
 
-  useEffect(() => {
-    if (!hasMore) return;
-    const observer = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        setPage(p => p + 1);
-      }
-    });
-    if (loader.current) observer.observe(loader.current);
-    return () => observer.disconnect();
-  }, [hasMore]);
 
   useEffect(() => {
     if (!user) {
@@ -84,7 +78,7 @@ const Home = () => {
 
   return (
     <div className="p-4">
-      <Hero />
+      <HeroVideo />
       <form onSubmit={search} className="mb-4 flex flex-wrap gap-2 items-center">
         <input
           className="flex-grow p-2 text-black"
@@ -104,7 +98,7 @@ const Home = () => {
           <option value="popularity.desc">Popular</option>
           <option value="release_date.desc">Newest</option>
         </select>
-        <button className="px-4 py-2 bg-blue-500 rounded" type="submit">Search</button>
+        <button className="px-4 py-2 bg-brand hover:bg-brand/90 text-white rounded" type="submit">Search</button>
       </form>
       {user && recommended.length > 0 && (
         <Slider title="Recommended for You">
@@ -123,7 +117,7 @@ const Home = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {movies.map(m => <MovieCard key={m.id} movie={m} />)}
       </div>
-      {hasMore && <div ref={loader} className="py-8 text-center">Loading...</div>}
+      {hasMore && <div ref={loader} />}
     </div>
   );
 };

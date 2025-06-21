@@ -7,7 +7,6 @@ import Rating from '../components/common/Rating.jsx';
 import Placeholder from '../components/common/Placeholder.jsx';
 import Spinner from '../components/common/Spinner.jsx';
 import NotFound from './NotFound.jsx';
-import { BASE_URL } from '../api.js';
 import { FaTwitter, FaWhatsapp, FaFacebook, FaLink } from 'react-icons/fa';
 
 const Container = styled.div`
@@ -83,12 +82,11 @@ const MovieDetail = () => {
       try {
         setLoading(true);
         setNotFound(false);
-        const res = await fetch(`${BASE_URL}/movies/${id}`);
-        if (res.status === 404) {
+        const { data } = await api.get(`movies/${id}`);
+        if (!data) {
           setNotFound(true);
           return;
         }
-        const data = await res.json();
         setMovie(data);
 
         const [vid, prov, rev] = await Promise.all([
@@ -164,8 +162,18 @@ const MovieDetail = () => {
       )}
       {user && (
         <div className="flex gap-2">
-          <button onClick={addToWatchlist} style={{ background: '#3b82f6', padding: '0.5rem 1rem' }}>Add to Watchlist</button>
-          <button onClick={addToFavorites} style={{ background: '#f59e0b', padding: '0.5rem 1rem' }}>Favorite</button>
+          <button
+            onClick={addToWatchlist}
+            className="bg-brand hover:bg-brand/90 text-white px-3 py-2"
+          >
+            Add to Watchlist
+          </button>
+          <button
+            onClick={addToFavorites}
+            className="bg-brand hover:bg-brand/90 text-white px-3 py-2"
+          >
+            Favorite
+          </button>
         </div>
       )}
       {providers.length > 0 && (

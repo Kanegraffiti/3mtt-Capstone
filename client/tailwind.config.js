@@ -11,6 +11,7 @@ export default {
       colors: {
         background: '#0D1B2A',
         surface: '#1B263B',
+        brand: '#8B2CF5',
       },
     },
   },

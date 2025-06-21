@@ -20,7 +20,14 @@ const MovieCard = ({ movie }) => {
       <Link to={`/movie/${movie.id}`} className="bg-surface p-2 rounded relative block transition duration-300 hover:scale-105 hover:shadow-lg">
         <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} className="mx-auto" />
         <h3 className="mt-2 text-center text-sm">{movie.title}</h3>
-        {user && <button onClick={add} className="absolute top-1 right-1 bg-blue-500 text-xs px-1">Add</button>}
+        {user && (
+          <button
+            onClick={add}
+            className="absolute top-1 right-1 bg-brand hover:bg-brand/90 text-white text-xs px-1"
+          >
+            Add
+          </button>
+        )}
       </Link>
     </motion.div>
   );

@@ -1,12 +1,12 @@
 # MyMovies
 
-| Live Links | |
-| --- | --- |
-| **Frontend** | [https://3mtt-capstone-one.vercel.app](https://3mtt-capstone-one.vercel.app) |
-| **Backend** | [https://threemtt-capstone.onrender.com](https://threemtt-capstone.onrender.com) |
-| **License** | MIT |
+![build](https://github.com/3mtt-org/movie-recommendation-app/actions/workflows/build.yml/badge.svg)
 
-![Demo](docs/demo.gif)
+**Live Demo:** [Frontend](https://3mtt-capstone-one.vercel.app) • [Backend](https://threemtt-capstone.onrender.com)
+
+
+> **Note**
+> The hero background video is not included in the repository. Download it from [Pixabay](https://cdn.pixabay.com/video/2021/03/20/68163-522585686_large.mp4) and place it at `client/public/hero_bg.mp4`.
 
 This is a full-stack movie recommendation application built with the MERN stack. The frontend uses **React** with **Tailwind CSS** for styling and the backend is an **Express** API connected to **MongoDB**. Movie data is fetched from the [TMDB API](https://www.themoviedb.org/).
 
