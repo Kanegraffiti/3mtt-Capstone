@@ -1,58 +1,127 @@
 # MyMovies
 
-![build](https://github.com/3mtt-org/movie-recommendation-app/actions/workflows/build.yml/badge.svg)
+Discover and save your favourite films with this simple movie recommendation app. Built as a capstone project, it demonstrates a full stack setup using popular JavaScript tools.
+
+![React](https://img.shields.io/badge/React-20232a?style=for-the-badge&logo=react)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express)
+![MongoDB](https://img.shields.io/badge/MongoDB-4ea94b?style=for-the-badge&logo=mongodb)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38b2ac?style=for-the-badge&logo=tailwind-css)
+![Termux](https://img.shields.io/badge/Termux-black?style=for-the-badge&logo=termux)
 
 **Live Demo:** [Frontend](https://3mtt-capstone-one.vercel.app) • [Backend](https://threemtt-capstone.onrender.com)
 
-This is a full-stack movie recommendation application built with the MERN stack. The frontend uses **React** with **Tailwind CSS** for styling and the backend is an **Express** API connected to **MongoDB**. Movie data is fetched from the [TMDB API](https://www.themoviedb.org/).
+---
 
-## Features
-- JWT based authentication with registration and login
-- Browse trending movies and search by title
-- Save movies to personal watchlists (multiple lists supported)
-- Rate and review movies
-- Responsive mobile‑first UI built with React and Tailwind CSS
+## What this project does
 
-## Setup
-1. Clone the repository and install dependencies for both `server` and `client`:
-   ```bash
-   git clone https://github.com/3mtt-org/movie-recommendation-app.git
-   cd movie-recommendation-app
-   cd server && npm install
-   cd ../client && npm install
-   ```
-2. Copy the example environment files and fill in your credentials:
-   ```bash
-   cp server/.env.example server/.env
-   cp client/.env.example client/.env
-   ```
-   The samples define the following variables:
-   - `MONGO_URI` – MongoDB connection string
-   - `JWT_SECRET` – secret for signing JWT tokens
-   - `TMDB_API_KEY` – your TMDB API key
-   - `PORT` – Express server port
-   - `VITE_API_URL` – URL of the backend API for the React app
-3. Start the development servers in separate terminals:
-   ```bash
-   # Server on port 5000
-   npm --prefix server run dev
-   
-   # Client on port 3000
-   npm --prefix client run dev
-   ```
+* Register and log in with a secure account
+* Browse, search and filter movies from the TMDB database
+* Save favourites and create watchlists
+* Rate and review titles
+* Mobile friendly interface
 
-## Deployment
-1. Build the PWA assets:
-   ```bash
-   npm --prefix client run build
-   ```
-   The build output in `client/dist` includes the generated `manifest.webmanifest` and service worker.
-2. Deploy the **frontend** to **Vercel** and set the `VITE_API_URL` environment variable so the React app can reach the Render backend.
-3. Deploy the **backend** to **Render** with environment variables `MONGO_URI`, `JWT_SECRET`, and `TMDB_API_KEY` configured.
-   Vercel will automatically run the build script when deploying.
-4. Optional GitHub Actions workflows can be added to automate deployments.
+The backend exposes a REST API using Express and stores data in MongoDB. The frontend is built with React and Tailwind CSS and communicates with the API using JWT authentication.
 
-## Documentation
-Beginner friendly guides for running the project locally on Termux and Windows are available in [`docs/running_locally.md`](docs/running_locally.md).
+---
 
-Enjoy your new movie recommendation app!
+## How it was built
+
+1. **Set up the backend** – created an Express server with routes for auth, movies, users and watchlists. Connected MongoDB with Mongoose and protected endpoints with JWT.
+2. **Create the frontend** – bootstrapped a React project using Vite and styled it with Tailwind CSS and styled‑components. Added pages for browsing movies, viewing details and managing accounts.
+3. **Fetch movie data** – integrated the TMDB API so users can search by title, genre or year and see full details including posters.
+4. **Add user features** – implemented saving favourites, custom lists, ratings and reviews so each user can personalise their library.
+5. **Make it responsive** – tested on mobile and desktop, ensuring the layout adapts well to smaller screens.
+6. **Deploy** – hosted the frontend on Vercel and the backend on Render. Environment variables are used for all secrets.
+
+---
+
+## Getting started
+
+Follow these steps to run the project locally.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Kanegraffiti/3mtt-Capstone.git
+cd 3mtt-Capstone
+
+# 2. Install backend then frontend dependencies
+cd server && npm install
+cd ../client && npm install
+
+# 3. Create .env files for server and client
+#    (see examples in each folder)
+
+# 4. Start the development servers
+npm --prefix server run dev     # backend on port 5000
+npm --prefix client run dev -- --host  # frontend on port 3000
+```
+
+Open the printed Vite network URL in your browser to see the site. When you are ready for production, run `npm --prefix client run build` and deploy the `client/dist` folder to Vercel. The backend can be deployed to Render or another Node host.
+
+### Termux quickstart
+
+You can also run everything on Android using Termux:
+
+```bash
+pkg update && pkg upgrade
+pkg install nodejs git
+
+git clone https://github.com/Kanegraffiti/3mtt-Capstone.git
+cd 3mtt-Capstone
+cd server && npm install
+cd ../client && npm install
+# create .env files as above
+npm run dev --prefix server &
+npm run dev --prefix client -- --host
+```
+
+Then open the Vite URL in your mobile browser. MongoDB will need an external connection string if you do not have it running locally on Android.
+
+---
+
+## Screenshots
+
+Below are placeholders for application screenshots. Add your images in a folder called `docs/screenshots/` with the following names to display them:
+
+```
+docs/screenshots/home-mobile.png
+docs/screenshots/home-tablet.png
+docs/screenshots/login-mobile.png
+docs/screenshots/login-tablet.png
+docs/screenshots/details-mobile.png
+docs/screenshots/details-tablet.png
+```
+
+You can then uncomment the Markdown below to show the images.
+
+```markdown
+<!-- Home Screen -->
+<!-- ![Home mobile](docs/screenshots/home-mobile.png) -->
+<!-- ![Home tablet](docs/screenshots/home-tablet.png) -->
+
+<!-- Login Screen -->
+<!-- ![Login mobile](docs/screenshots/login-mobile.png) -->
+<!-- ![Login tablet](docs/screenshots/login-tablet.png) -->
+
+<!-- Movie Details -->
+<!-- ![Details mobile](docs/screenshots/details-mobile.png) -->
+<!-- ![Details tablet](docs/screenshots/details-tablet.png) -->
+```
+
+---
+
+## Project requirements
+
+This project satisfies the following capstone criteria:
+
+- **User Authentication** – secure registration, login and JWT based access
+- **Movie Discovery** – search, filter and view detailed information from TMDB
+- **User Features** – favourites, watchlists, ratings and reviews
+- **Technical Stack** – React frontend, Express API backend, MongoDB database
+- **Responsive Design** – works on both mobile and desktop
+
+Stretch ideas include social features, improved recommendations, movie trailers via the YouTube API and turning the app into a PWA.
+
+Enjoy exploring MyMovies and feel free to build on it!
+
