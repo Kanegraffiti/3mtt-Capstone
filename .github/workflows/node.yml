@@ -1,0 +1,74 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: server
+
+      - name: Run backend tests
+        run: npm test --if-present
+        working-directory: server
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: client
+
+      - name: Run frontend tests
+        run: npm test --if-present
+        working-directory: client
+
+      # Explain how to configure Render deploy hook
+      - name: Render deploy hook instructions
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.RENDER_DEPLOY_HOOK_URL == ''
+        run: |
+          echo "Automatic backend deployment is disabled."
+          echo "Set the RENDER_DEPLOY_HOOK_URL secret with the Deploy Hook URL from Render"
+          echo "in GitHub -> Settings -> Secrets -> Actions to enable auto deploy."
+
+      - name: Deploy backend to Render
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "RENDER_DEPLOY_HOOK_URL secret is not set. Skipping Render deployment."
+          else
+            echo "Triggering Render deploy hook"
+            curl -X POST "$DEPLOY_HOOK_URL"
+          fi
+
+      - name: Vercel deploy instructions
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && (secrets.VERCEL_TOKEN == '' || secrets.VERCEL_PROJECT_ID == '')
+        run: |
+          echo "Automatic frontend deployment is disabled."
+          echo "Set VERCEL_TOKEN and VERCEL_PROJECT_ID secrets in GitHub to enable it."
+
+      - name: Deploy frontend to Vercel
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && secrets.VERCEL_TOKEN != '' && secrets.VERCEL_PROJECT_ID != ''
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: client
+          prod: true
+          env: |
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+
