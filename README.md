@@ -92,7 +92,7 @@ Then open the Vite URL in your mobile browser. MongoDB will need an external con
 
 <!-- Movie Details -->
 <img src="docs/screenshots/details-mobile.png" alt="Mobile 3" style="border-radius: 12px;" />
-<img src="docs/screenshots/details-tablet.jpg" alt="Tablet 3" style="border-radius: 12px;" />
+<img src="docs/screenshots/details-tablet.png" alt="Tablet 3" style="border-radius: 12px;" />
 
 ---
 
