@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, useRef } from 'react';
-import axios from 'axios';
+import { api } from '../api.js';
 import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
 import Hero from '../components/Hero.jsx';
@@ -21,7 +21,7 @@ const Home = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await axios.get(`/movies/trending?page=${page}`);
+        const res = await api.get(`movies/trending?page=${page}`);
         const newMovies = res.data.results || [];
         setMovies(prev => [...prev, ...newMovies]);
         if (newMovies.length > 0) {
@@ -57,14 +57,14 @@ const Home = () => {
       return;
     }
     const token = localStorage.getItem('token');
-    axios
-      .get('/movies/recommendations', {
+    api
+      .get('movies/recommendations', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(res => setRecommended(res.data.results))
       .catch(() => setRecommended([]));
-    axios
-      .get('/movies/recommendations/advanced', {
+    api
+      .get('movies/recommendations/advanced', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(res => setAdvanced(res.data.results))
@@ -78,7 +78,7 @@ const Home = () => {
     if (genre) params.append('genre', genre);
     if (year) params.append('year', year);
     if (sortBy) params.append('sortBy', sortBy);
-    const res = await axios.get(`/movies/search?${params.toString()}`);
+    const res = await api.get(`movies/search?${params.toString()}`);
     setMovies(res.data.results);
   };
 

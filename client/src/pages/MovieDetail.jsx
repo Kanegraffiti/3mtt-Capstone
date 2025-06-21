@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../api.js';
 import styled from 'styled-components';
 import { AuthContext } from '../context/AuthContext.jsx';
 import Rating from '../components/common/Rating.jsx';
@@ -60,9 +60,9 @@ const MovieDetail = () => {
         setMovie(data);
 
         const [vid, prov, rev] = await Promise.all([
-          axios.get(`/movies/${id}/videos`),
-          axios.get(`/movies/${id}/providers`),
-          axios.get(`/reviews/${id}`)
+          api.get(`movies/${id}/videos`),
+          api.get(`movies/${id}/providers`),
+          api.get(`reviews/${id}`)
         ]);
         setVideos(vid.data.results || []);
         const provArr = Object.values(prov.data.results?.US?.flatrate || []);
@@ -81,21 +81,21 @@ const MovieDetail = () => {
     const token = localStorage.getItem('token');
     if (!token || !user || !user.watchlists || user.watchlists.length === 0) return;
     const listId = user.watchlists[0]._id;
-    await axios.post(`/watchlist/${listId}/add`, { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
+    await api.post(`watchlist/${listId}/add`, { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
   };
 
   const addToFavorites = async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
-    await axios.post('/favorites/add', { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
+    await api.post('favorites/add', { tmdbId: id, title: movie.title, posterPath: movie.poster_path }, { headers: { Authorization: `Bearer ${token}` } });
   };
 
   const submitReview = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     if (!token) return;
-    await axios.post(`/reviews/${id}`, { rating, comment }, { headers: { Authorization: `Bearer ${token}` } });
-    const res = await axios.get(`/reviews/${id}`);
+    await api.post(`reviews/${id}`, { rating, comment }, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await api.get(`reviews/${id}`);
     setReviews(res.data);
     setComment('');
     setRating(0);
