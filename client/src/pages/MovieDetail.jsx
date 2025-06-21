@@ -8,6 +8,7 @@ import Placeholder from '../components/common/Placeholder.jsx';
 import Spinner from '../components/common/Spinner.jsx';
 import NotFound from './NotFound.jsx';
 import { BASE_URL } from '../api.js';
+import { FaTwitter, FaWhatsapp, FaFacebook, FaLink } from 'react-icons/fa';
 
 const Container = styled.div`
   padding: 1rem;
@@ -45,6 +46,37 @@ const MovieDetail = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+
+  const shareText = (movie) =>
+    `${movie.title} - ${movie.tagline || movie.overview?.slice(0, 100) || ''} ${window.location.href}`;
+
+  const shareWhatsapp = () => {
+    if (!movie) return;
+    const text = encodeURIComponent(shareText(movie));
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  };
+
+  const shareTwitter = () => {
+    if (!movie) return;
+    const text = encodeURIComponent(shareText(movie));
+    window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+  };
+
+  const shareFacebook = () => {
+    if (!movie) return;
+    const url = encodeURIComponent(window.location.href);
+    const quote = encodeURIComponent(`${movie.title} - ${movie.tagline || movie.overview?.slice(0, 100) || ''}`);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank');
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard');
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -146,6 +178,44 @@ const MovieDetail = () => {
         </div>
       )}
       <p>{movie.overview}</p>
+      <div className="flex gap-4 my-2 items-center">
+        <button
+          onClick={shareWhatsapp}
+          title="Share on WhatsApp"
+          aria-label="Share on WhatsApp"
+          className="text-green-500 hover:text-green-400"
+        >
+          <FaWhatsapp size={24} />
+          <span className="sr-only">Share on WhatsApp</span>
+        </button>
+        <button
+          onClick={shareTwitter}
+          title="Share on Twitter"
+          aria-label="Share on Twitter"
+          className="text-blue-400 hover:text-blue-300"
+        >
+          <FaTwitter size={24} />
+          <span className="sr-only">Share on Twitter</span>
+        </button>
+        <button
+          onClick={shareFacebook}
+          title="Share on Facebook"
+          aria-label="Share on Facebook"
+          className="text-blue-600 hover:text-blue-500"
+        >
+          <FaFacebook size={24} />
+          <span className="sr-only">Share on Facebook</span>
+        </button>
+        <button
+          onClick={copyLink}
+          title="Copy link"
+          aria-label="Copy link"
+          className="text-gray-400 hover:text-gray-300"
+        >
+          <FaLink size={24} />
+          <span className="sr-only">Copy link</span>
+        </button>
+      </div>
       <ReviewSection>
         <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Reviews</h3>
         {reviews.map(r => (
