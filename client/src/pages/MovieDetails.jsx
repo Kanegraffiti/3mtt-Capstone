@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-import { api } from '../api.js';
-import Spinner from '../components/common/Spinner.jsx';
 
 const Container = styled.div`
   padding: 1rem;
@@ -16,40 +14,38 @@ const Title = styled.h2`
   font-size: 1.5rem;
 `;
 
+const Poster = styled.img`
+  max-width: 300px;
+  border-radius: 4px;
+  align-self: center;
+`;
+
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMovie = async () => {
       setLoading(true);
       try {
-        const [movieRes, videoRes] = await Promise.all([
-          axios.get(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.REACT_APP_TMDB_API_KEY}`
-          ),
-          api.get(`movies/${id}/videos`),
-        ]);
-        setMovie(movieRes.data);
-        const ytVideo = (videoRes.data.results || []).find(
-          (v) => v.site === 'YouTube'
+        const res = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.REACT_APP_TMDB_API_KEY}`
         );
-        setVideo(ytVideo || null);
+        setMovie(res.data);
       } catch (err) {
         console.error(err);
         setMovie(null);
-        setVideo(null);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+
+    fetchMovie();
   }, [id]);
 
   if (loading) {
-    return <Spinner />;
+    return <p className="p-4">Loading...</p>;
   }
 
   if (!movie) {
@@ -59,12 +55,10 @@ const MovieDetails = () => {
   return (
     <Container>
       <Title>{movie.title}</Title>
-      {video && (
-        <iframe
-          title="Trailer"
-          src={`https://www.youtube.com/embed/${video.key}`}
-          allowFullScreen
-          className="w-full aspect-video"
+      {movie.poster_path && (
+        <Poster
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
         />
       )}
       <p>{movie.overview}</p>
