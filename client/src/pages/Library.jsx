@@ -3,12 +3,14 @@ import { api } from '../api.js';
 import MovieCard from '../components/MovieCard.jsx';
 import Slider from '../components/common/Slider.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
+import SmartRecommendations from '../components/SmartRecommendations.jsx';
+import useMediaQuery from '../hooks/useMediaQuery.js';
 
 const Library = () => {
   const { user, setUser } = useContext(AuthContext);
   const [lists, setLists] = useState([]);
   const [favorites, setFavorites] = useState([]);
-  const [recommended, setRecommended] = useState([]);
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -21,9 +23,6 @@ const Library = () => {
     api.get('favorites', { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setFavorites(res.data.movies || []))
       .catch(() => setFavorites([]));
-    api.get('movies/recommendations', { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => setRecommended(res.data.results || []))
-      .catch(() => setRecommended([]));
   }, [user]);
 
   const create = async (e) => {
@@ -88,16 +87,7 @@ const Library = () => {
         </div>
       )}
 
-      {recommended.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-lg mb-2">For You</h3>
-          <Slider>
-            {recommended.map(m => (
-              <MovieCard key={m.id} movie={m} />
-            ))}
-          </Slider>
-        </div>
-      )}
+      {isDesktop && <SmartRecommendations />}
 
       <h3 className="text-lg mb-2">Watchlists</h3>
 
@@ -135,6 +125,8 @@ const Library = () => {
           </Slider>
         </div>
       ))}
+
+      {!isDesktop && <SmartRecommendations />}
     </div>
   );
 };
