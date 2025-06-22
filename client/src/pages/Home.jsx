@@ -152,7 +152,7 @@ const Home = () => {
         )}
       </div>
       {trendingError && <p className="text-red-500 mb-2">{trendingError}</p>}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {movies.map(m => <MovieCard key={m.id} movie={m} />)}
       </div>
       {hasMore && <div ref={loader} />}
