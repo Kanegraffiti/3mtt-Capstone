@@ -8,8 +8,6 @@ import { AuthContext } from '../context/AuthContext.jsx';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
-  const [recommended, setRecommended] = useState([]);
-  const [advanced, setAdvanced] = useState([]);
   const [page, setPage] = useState(1);
   const loader = useRef(null);
   const [hasMore, setHasMore] = useState(true);
@@ -51,26 +49,7 @@ const Home = () => {
   }, [page, searching]);
 
 
-  useEffect(() => {
-    if (!user) {
-      setRecommended([]);
-      setAdvanced([]);
-      return;
-    }
-    const token = localStorage.getItem('token');
-    api
-      .get('movies/recommendations', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(res => setRecommended(res.data.results))
-      .catch(() => setRecommended([]));
-    api
-      .get('movies/recommendations/advanced', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(res => setAdvanced(res.data.results))
-      .catch(() => setAdvanced([]));
-  }, [user]);
+  // recommendations moved to Library/Watchlist views
 
   const handleSearch = async () => {
     try {
@@ -172,20 +151,6 @@ const Home = () => {
           </button>
         )}
       </div>
-      {user && recommended.length > 0 && (
-        <Slider title="Recommended for You">
-          {recommended.map(m => (
-            <MovieCard key={m.id} movie={m} />
-          ))}
-        </Slider>
-      )}
-      {user && advanced.length > 0 && (
-        <Slider title="Top Picks">
-          {advanced.map(m => (
-            <MovieCard key={m.id} movie={m} />
-          ))}
-        </Slider>
-      )}
       {trendingError && <p className="text-red-500 mb-2">{trendingError}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {movies.map(m => <MovieCard key={m.id} movie={m} />)}
