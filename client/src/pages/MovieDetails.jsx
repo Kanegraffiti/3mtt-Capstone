@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { api } from '../api.js';
+import AddToWatchlistButton from '../components/movie/AddToWatchlistButton.jsx';
+import AddToFavoritesButton from '../components/movie/AddToFavoritesButton.jsx';
+import RatingStars from '../components/movie/RatingStars.jsx';
+import ReviewList from '../components/movie/ReviewList.jsx';
+import ReviewForm from '../components/movie/ReviewForm.jsx';
+import SocialShareButtons from '../components/movie/SocialShareButtons.jsx';
 
 const Container = styled.div`
   padding: 1rem;
@@ -23,17 +29,24 @@ const Poster = styled.img`
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovie = async () => {
       setLoading(true);
       try {
-        const res = await api.get(`movies/${id}`);
-        setMovie(res.data);
+        const [movieRes, videoRes] = await Promise.all([
+          api.get(`movies/${id}`),
+          api.get(`movies/${id}/videos`),
+        ]);
+        setMovie(movieRes.data);
+        const ytVideo = (videoRes.data.results || []).find((v) => v.site === 'YouTube');
+        setVideo(ytVideo || null);
       } catch (err) {
         console.error(err);
         setMovie(null);
+        setVideo(null);
       } finally {
         setLoading(false);
       }
@@ -54,10 +67,20 @@ const MovieDetails = () => {
     return <div className="p-4">Movie not found</div>;
   }
 
+  console.log('Movie loaded:', movie);
+
   return (
     <Container>
       <Title>{movie.title}</Title>
-      {movie.poster_path && (
+      {video && (
+        <iframe
+          title="Trailer"
+          src={`https://www.youtube.com/embed/${video.key}`}
+          allowFullScreen
+          className="w-full aspect-video"
+        />
+      )}
+      {movie.poster_path && !video && (
         <Poster
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt={movie.title}
@@ -72,6 +95,26 @@ const MovieDetails = () => {
           </span>
         ))}
       </div>
+      {movie && (
+        <>
+          <div className="flex space-x-2 my-2">
+            <AddToWatchlistButton
+              movieId={movie.id}
+              title={movie.title}
+              posterPath={movie.poster_path}
+            />
+            <AddToFavoritesButton
+              movieId={movie.id}
+              title={movie.title}
+              posterPath={movie.poster_path}
+            />
+          </div>
+          <RatingStars movieId={movie.id} />
+          <ReviewList movieId={movie.id} />
+          <ReviewForm movieId={movie.id} />
+          <SocialShareButtons movie={movie} />
+        </>
+      )}
     </Container>
   );
 };
