@@ -104,6 +104,12 @@ const Home = () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleSearch();
+            }
+          }}
           placeholder="Search movies..."
           className="bg-gray-100 text-black border border-gray-300 p-2 w-full rounded"
         />

@@ -48,7 +48,7 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
       </Link>
       <div className="p-2">
         <h3 className="text-center text-sm font-semibold truncate">{movie.title}</h3>
-        <div className="flex justify-between mt-2">
+        <div className="flex justify-center gap-2 mt-2">
           <button onClick={addFavorite} className="bg-brand hover:bg-brand/90 text-white px-2 py-1 text-xs rounded">
             ❤️ Favorite
           </button>
