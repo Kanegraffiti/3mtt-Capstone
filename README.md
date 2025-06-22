@@ -1,6 +1,6 @@
 # MyMovies
 
-Discover and save your favourite films with this simple movie recommendation app. Built as a capstone project, it demonstrates a full stack setup using popular JavaScript tools.
+Discover and save your favourite films with this simple movie recommendation app. Built as a capstone project, it demonstrates a full stack setup using popular JavaScript tools. This app was created in fulfilment of the 3mtt Capstone Project requirements.
 
 ![React](https://img.shields.io/badge/React-20232a?style=for-the-badge&logo=react)
 ![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express)
@@ -22,6 +22,7 @@ Discover and save your favourite films with this simple movie recommendation app
 * Mobile friendly interface
 
 The backend exposes a REST API using Express and stores data in MongoDB. The frontend is built with React and Tailwind CSS and communicates with the API using JWT authentication.
+Stretch ideas include social features, improved recommendations, movie trailers via the YouTube API and turning the app into a PWA.
 
 ---
 
@@ -74,20 +75,6 @@ Movie Cards and Login
 Menu Tray and Movie Details
 <img src="docs/screenshots/details-mobile.png" alt="Mobile 3" style="border-radius: 12px;" />
 <img src="docs/screenshots/details-tablet.png" alt="Tablet 3" style="border-radius: 12px;" />
-
----
-
-## Project requirements
-
-This project satisfies the following capstone criteria:
-
-- **User Authentication** – secure registration, login and JWT based access
-- **Movie Discovery** – search, filter and view detailed information from TMDB
-- **User Features** – favourites, watchlists, ratings and reviews
-- **Technical Stack** – React frontend, Express API backend, MongoDB database
-- **Responsive Design** – works on both mobile and desktop
-
-Stretch ideas include social features, improved recommendations, movie trailers via the YouTube API and turning the app into a PWA.
 
 ---
 
