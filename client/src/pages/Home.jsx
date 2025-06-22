@@ -76,7 +76,6 @@ const Home = () => {
     try {
       setSearching(true);
       setSearchError(null);
-
       const res = await api.get('movies/search', {
         params: {
           query: searchQuery,
@@ -85,14 +84,11 @@ const Home = () => {
           minRating: searchFilters.minRating,
         },
       });
-
       setMovies(res.data);
       setHasMore(false);
     } catch (err) {
       setMovies([]);
-      setSearchError(
-        err.response?.data?.message || 'Search failed. Please try again.'
-      );
+      setSearchError(err.response?.data?.message || 'Search failed.');
     } finally {
       setSearching(false);
     }
@@ -117,7 +113,7 @@ const Home = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search movies..."
-          className="border p-2 w-full"
+          className="bg-gray-100 text-black border border-gray-300 p-2 w-full rounded"
         />
         <div className="flex gap-2 mt-2">
           <select
@@ -164,8 +160,8 @@ const Home = () => {
         >
           Search
         </button>
-        {searching && <p className="text-sm text-blue-400">Searching...</p>}
-        {searchError && <p className="text-sm text-red-500">{searchError}</p>}
+        {searching && <p className="text-blue-400">Searching...</p>}
+        {searchError && <p className="text-red-500">{searchError}</p>}
         {searchQuery && (
           <button
             type="button"

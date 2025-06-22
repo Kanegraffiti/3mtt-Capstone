@@ -1,4 +1,5 @@
 import express from 'express';
+import axios from 'axios';
 import { trendingMovies, movieDetails, movieVideos, movieProviders, recommendedMovies, advancedRecommendations } from '../controllers/movieController.js';
 import Movie from '../models/Movie.js';
 import { protect } from '../middleware/auth.js';
@@ -24,7 +25,24 @@ router.get('/search', async (req, res) => {
       filter.averageRating = { $gte: parseFloat(minRating) };
     }
 
-    const results = await Movie.find(filter).limit(20);
+    let results = await Movie.find(filter).limit(20);
+
+    if (results.length === 0 && query) {
+      // fallback to TMDB if no results
+      const tmdbRes = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
+        params: {
+          api_key: process.env.TMDB_API_KEY,
+          query
+        }
+      });
+
+      results = tmdbRes.data.results.map(movie => ({
+        title: movie.title,
+        releaseDate: movie.release_date,
+        posterPath: movie.poster_path,
+        overview: movie.overview
+      }));
+    }
 
     if (!results.length) {
       return res.status(404).json({ message: 'No matching movies found.' });
