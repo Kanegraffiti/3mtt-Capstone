@@ -67,7 +67,6 @@ const MovieDetails = () => {
     return <div className="p-4">Movie not found</div>;
   }
 
-  console.log('Movie loaded:', movie);
 
   return (
     <Container>
@@ -86,6 +85,7 @@ const MovieDetails = () => {
           alt={movie.title}
         />
       )}
+      {!video && <p>Trailer unavailable.</p>}
       <p>{movie.overview}</p>
       <p>Release Date: {movie.release_date}</p>
       <div className="flex gap-2 flex-wrap">
