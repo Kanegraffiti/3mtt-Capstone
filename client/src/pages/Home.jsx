@@ -17,6 +17,7 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const loader = useRef(null);
   const [hasMore, setHasMore] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
   const { user } = useContext(AuthContext);
 
   const loadMore = () => setPage(p => p + 1);
@@ -40,8 +41,8 @@ const Home = () => {
         setHasMore(false);
       }
     };
-    if (hasMore) fetchMovies();
-  }, [page]);
+    if (!isSearching && hasMore) fetchMovies();
+  }, [page, isSearching]);
 
 
   useEffect(() => {
@@ -67,13 +68,31 @@ const Home = () => {
 
   const search = async (e) => {
     e.preventDefault();
+    setIsSearching(true);
+    setPage(1);
+    setHasMore(false);
     const params = new URLSearchParams();
     if (query) params.append('q', query);
     if (genre) params.append('genre', genre);
     if (year) params.append('year', year);
     if (sortBy) params.append('sortBy', sortBy);
-    const res = await api.get(`movies/search?${params.toString()}`);
-    setMovies(res.data.results);
+    try {
+      const res = await api.get(`movies/search?${params.toString()}`);
+      setMovies(res.data.results);
+    } catch {
+      setMovies([]);
+    }
+  };
+
+  const clearSearch = () => {
+    setIsSearching(false);
+    setMovies([]);
+    setQuery('');
+    setGenre('');
+    setYear('');
+    setSortBy('');
+    setPage(1);
+    setHasMore(true);
   };
 
   return (
@@ -99,6 +118,15 @@ const Home = () => {
           <option value="release_date.desc">Newest</option>
         </select>
         <button className="px-4 py-2 bg-brand hover:bg-brand/90 text-white rounded" type="submit">Search</button>
+        {isSearching && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
+          >
+            Clear
+          </button>
+        )}
       </form>
       {user && recommended.length > 0 && (
         <Slider title="Recommended for You">
