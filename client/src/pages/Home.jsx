@@ -10,16 +10,18 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [recommended, setRecommended] = useState([]);
   const [advanced, setAdvanced] = useState([]);
-  const [query, setQuery] = useState('');
-  const [genre, setGenre] = useState('');
-  const [year, setYear] = useState('');
-  const [sortBy, setSortBy] = useState('');
   const [page, setPage] = useState(1);
   const loader = useRef(null);
   const [hasMore, setHasMore] = useState(true);
   const [trendingError, setTrendingError] = useState('');
-  const [searchError, setSearchError] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState(null);
+  const [searchFilters, setSearchFilters] = useState({
+    genres: [],
+    year: '',
+    minRating: ''
+  });
   const { user } = useContext(AuthContext);
 
   const loadMore = () => setPage(p => p + 1);
@@ -45,8 +47,8 @@ const Home = () => {
         setTrendingError('Failed to fetch trending movies');
       }
     };
-    if (!isSearching && hasMore) fetchMovies();
-  }, [page, isSearching]);
+    if (!searching && hasMore) fetchMovies();
+  }, [page, searching]);
 
 
   useEffect(() => {
@@ -70,70 +72,110 @@ const Home = () => {
       .catch(() => setAdvanced([]));
   }, [user]);
 
-  const search = async (e) => {
-    e.preventDefault();
-    setIsSearching(true);
-    setPage(1);
-    setHasMore(false);
-    const params = new URLSearchParams();
-    if (query) params.append('q', query);
-    if (genre) params.append('genre', genre);
-    if (year) params.append('year', year);
-    if (sortBy) params.append('sortBy', sortBy);
+  const handleSearch = async () => {
     try {
-      const res = await api.get(`movies/search?${params.toString()}`);
-      setMovies(res.data.results);
-      setSearchError('');
+      setSearching(true);
+      setSearchError(null);
+
+      const res = await api.get('movies/search', {
+        params: {
+          query: searchQuery,
+          genres: searchFilters.genres,
+          year: searchFilters.year,
+          minRating: searchFilters.minRating,
+        },
+      });
+
+      setMovies(res.data);
+      setHasMore(false);
     } catch (err) {
-      setSearchError('Failed to fetch search results');
+      setMovies([]);
+      setSearchError(
+        err.response?.data?.message || 'Search failed. Please try again.'
+      );
+    } finally {
+      setSearching(false);
     }
   };
 
   const clearSearch = () => {
-    setIsSearching(false);
+    setSearching(false);
     setMovies([]);
-    setQuery('');
-    setGenre('');
-    setYear('');
-    setSortBy('');
+    setSearchQuery('');
+    setSearchFilters({ genres: [], year: '', minRating: '' });
     setPage(1);
     setHasMore(true);
+    setSearchError(null);
   };
 
   return (
     <div className="p-4">
       <HeroVideo />
-      <form onSubmit={search} className="mb-4 flex flex-wrap gap-2 items-center">
+      <div className="mb-4">
         <input
-          className="flex-grow p-2 text-black"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search movies..."
+          className="border p-2 w-full"
         />
-        <select className="p-2 text-black" value={genre} onChange={e => setGenre(e.target.value)}>
-          <option value="">Genre</option>
-          <option value="28">Action</option>
-          <option value="35">Comedy</option>
-          <option value="18">Drama</option>
-        </select>
-        <input className="p-2 w-20 text-black" value={year} onChange={e => setYear(e.target.value)} placeholder="Year" />
-        <select className="p-2 text-black" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-          <option value="">Sort</option>
-          <option value="popularity.desc">Popular</option>
-          <option value="release_date.desc">Newest</option>
-        </select>
-        <button className="px-4 py-2 bg-brand hover:bg-brand/90 text-white rounded" type="submit">Search</button>
-        {isSearching && (
+        <div className="flex gap-2 mt-2">
+          <select
+            multiple
+            className="border p-2"
+            value={searchFilters.genres}
+            onChange={(e) =>
+              setSearchFilters((prev) => ({
+                ...prev,
+                genres: Array.from(e.target.selectedOptions).map((o) => o.value),
+              }))
+            }
+          >
+            <option value="Action">Action</option>
+            <option value="Romance">Romance</option>
+            <option value="Comedy">Comedy</option>
+          </select>
+          <input
+            type="text"
+            className="border p-2 w-20"
+            value={searchFilters.year}
+            onChange={(e) =>
+              setSearchFilters((prev) => ({ ...prev, year: e.target.value }))
+            }
+            placeholder="Year"
+          />
+          <input
+            type="number"
+            step="0.1"
+            className="border p-2 w-24"
+            value={searchFilters.minRating}
+            onChange={(e) =>
+              setSearchFilters((prev) => ({
+                ...prev,
+                minRating: e.target.value,
+              }))
+            }
+            placeholder="Min Rating"
+          />
+        </div>
+        <button
+          onClick={handleSearch}
+          className="mt-2 bg-purple-600 text-white px-4 py-1 rounded"
+        >
+          Search
+        </button>
+        {searching && <p className="text-sm text-blue-400">Searching...</p>}
+        {searchError && <p className="text-sm text-red-500">{searchError}</p>}
+        {searchQuery && (
           <button
             type="button"
             onClick={clearSearch}
-            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
+            className="ml-2 px-4 py-1 bg-gray-500 text-white rounded"
           >
             Clear
           </button>
         )}
-      </form>
-      {searchError && <p className="text-red-500 mb-2">{searchError}</p>}
+      </div>
       {user && recommended.length > 0 && (
         <Slider title="Recommended for You">
           {recommended.map(m => (
