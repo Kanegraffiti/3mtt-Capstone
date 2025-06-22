@@ -9,6 +9,7 @@ import { AuthContext } from '../context/AuthContext.jsx';
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const loader = useRef(null);
   const [hasMore, setHasMore] = useState(true);
   const [trendingError, setTrendingError] = useState('');
@@ -22,7 +23,7 @@ const Home = () => {
   });
   const { user } = useContext(AuthContext);
 
-  const loadMore = () => setPage(p => p + 1);
+  const loadMore = () => setPage((p) => p + 1);
   useInfiniteScroll({ loader, hasMore, loadMore });
 
   useEffect(() => {
@@ -51,25 +52,37 @@ const Home = () => {
 
   // recommendations moved to Library/Watchlist views
 
-  const handleSearch = async () => {
+  const fetchSearch = async (q, pageNum = 1) => {
     try {
       setSearching(true);
       setSearchError(null);
       const res = await api.get('movies/search', {
         params: {
-          query: searchQuery,
-          genres: searchFilters.genres,
+          q,
+          genre: searchFilters.genres.join(','),
           year: searchFilters.year,
-          minRating: searchFilters.minRating,
+          page: pageNum,
         },
       });
-      setMovies(res.data);
+      setMovies(res.data.results || []);
+      setTotalPages(res.data.total_pages || 1);
+      setPage(pageNum);
       setHasMore(false);
     } catch (err) {
       setMovies([]);
       setSearchError(err.response?.data?.message || 'Search failed.');
     } finally {
       setSearching(false);
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) fetchSearch(searchQuery, 1);
+  };
+
+  const goToPage = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      fetchSearch(searchQuery, newPage);
     }
   };
 
@@ -94,10 +107,10 @@ const Home = () => {
           placeholder="Search movies..."
           className="bg-gray-100 text-black border border-gray-300 p-2 w-full rounded"
         />
-        <div className="flex gap-2 mt-2">
+        <div className="flex flex-wrap gap-2 mt-2">
           <select
             multiple
-            className="border p-2"
+            className="border p-2 rounded"
             value={searchFilters.genres}
             onChange={(e) =>
               setSearchFilters((prev) => ({
@@ -112,7 +125,7 @@ const Home = () => {
           </select>
           <input
             type="text"
-            className="border p-2 w-20"
+            className="border p-2 w-20 rounded"
             value={searchFilters.year}
             onChange={(e) =>
               setSearchFilters((prev) => ({ ...prev, year: e.target.value }))
@@ -122,7 +135,7 @@ const Home = () => {
           <input
             type="number"
             step="0.1"
-            className="border p-2 w-24"
+            className="border p-2 w-24 rounded"
             value={searchFilters.minRating}
             onChange={(e) =>
               setSearchFilters((prev) => ({
@@ -153,8 +166,31 @@ const Home = () => {
       </div>
       {trendingError && <p className="text-red-500 mb-2">{trendingError}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {movies.map(m => <MovieCard key={m.id} movie={m} />)}
+        {movies.map((m) => (
+          <MovieCard key={m.id} movie={m} />
+        ))}
       </div>
+      {searchQuery && !searching && (
+        <div className="flex justify-center items-center mt-4 gap-4">
+          <button
+            onClick={() => goToPage(page - 1)}
+            disabled={page === 1}
+            className="bg-gray-700 px-4 py-2 rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          <span className="text-sm text-gray-400">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => goToPage(page + 1)}
+            disabled={page === totalPages}
+            className="bg-gray-700 px-4 py-2 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
       {hasMore && <div ref={loader} />}
     </div>
   );

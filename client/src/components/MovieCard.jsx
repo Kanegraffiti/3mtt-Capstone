@@ -33,18 +33,29 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
 
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-      <Link to={`/movie/${movie.id}`} className="bg-surface p-2 rounded block transition duration-300 hover:scale-105 hover:shadow-lg">
-        <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} className="mx-auto" />
-        <h3 className="mt-2 text-center text-sm">{movie.title}</h3>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-surface rounded overflow-hidden hover:shadow-lg transition hover:scale-105"
+    >
+      <Link to={`/movie/${movie.id}`}>
+        <img
+          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+          alt={movie.title}
+          className="w-full h-[250px] object-cover"
+        />
       </Link>
-      <div className="flex justify-between mt-2">
-        <button onClick={addFavorite} className="bg-brand hover:bg-brand/90 text-white px-2 py-1 text-xs rounded">
-          ❤️ Favorite
-        </button>
-        <button onClick={addWatchlist} className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 text-xs rounded">
-          🎬 Watchlist
-        </button>
+      <div className="p-2">
+        <h3 className="text-center text-sm font-semibold truncate">{movie.title}</h3>
+        <div className="flex justify-between mt-2">
+          <button onClick={addFavorite} className="bg-brand hover:bg-brand/90 text-white px-2 py-1 text-xs rounded">
+            ❤️ Favorite
+          </button>
+          <button onClick={addWatchlist} className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 text-xs rounded">
+            🎬 Watchlist
+          </button>
+        </div>
       </div>
     </motion.div>
   );

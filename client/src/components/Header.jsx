@@ -9,10 +9,10 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-surface text-white p-5 w-full shadow-md fixed top-0 z-50">
+    <header className="bg-gradient-to-r from-brand to-blue-600 text-white p-5 w-full shadow-md fixed top-0 z-50">
       <div className="container mx-auto flex items-center justify-between flex-wrap">
         <div className="flex items-center cursor-pointer" onClick={() => navigate('/')}>
-          <img src={Logo} alt="CinemaFlix Logo" className="h-10 w-40 mr-3" />
+          <img src={Logo} alt="MyMovies Logo" className="h-10 w-40 mr-3" />
         </div>
         <button className="block md:hidden text-white text-4xl" onClick={() => setMenuOpen(!menuOpen)}>
           ☰
