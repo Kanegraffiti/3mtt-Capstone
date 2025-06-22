@@ -59,30 +59,11 @@ npm --prefix client run dev -- --host  # frontend on port 3000
 
 Open the printed Vite network URL in your browser to see the site. When you are ready for production, run `npm --prefix client run build` and deploy the `client/dist` folder to Vercel. The backend can be deployed to Render or another Node host.
 
-### Termux quickstart
-
-You can also run everything on Android using Termux:
-
-```bash
-pkg update && pkg upgrade
-pkg install nodejs git
-
-git clone https://github.com/Kanegraffiti/3mtt-Capstone.git
-cd 3mtt-Capstone
-cd server && npm install
-cd ../client && npm install
-# create .env files as above
-npm run dev --prefix server &
-npm run dev --prefix client -- --host
-```
-
-Then open the Vite URL in your mobile browser. MongoDB will need an external connection string if you do not have it running locally on Android.
-
 ---
 
 ## Mobile and Tablet UI Screenshots
 
-<!-- Home Screen -->
+Home Screen
 <img src="docs/screenshots/home-mobile.png" alt="Mobile 1" style="border-radius: 12px;" />
 <img src="docs/screenshots/home-tablet.jpg" alt="Tablet 1" style="border-radius: 12px;" />
 
@@ -113,4 +94,4 @@ Stretch ideas include social features, improved recommendations, movie trailers 
 ## Documentation
 Beginner friendly guides for running the project locally on Termux and Windows are available in [`docs/running_locally.md`](docs/running_locally.md).
 
-Enjoy exploring MyMovies and feel free to build on it!
+Enjoy exploring MyMovies and feel free to build on it or contribute!
