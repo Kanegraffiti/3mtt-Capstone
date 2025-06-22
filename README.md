@@ -63,15 +63,15 @@ Open the printed Vite network URL in your browser to see the site. When you are 
 
 ## Mobile and Tablet UI Screenshots
 
-Home Screen
+Home Screen on Mobile & Tablet
 <img src="docs/screenshots/home-mobile.png" alt="Mobile 1" style="border-radius: 12px;" />
 <img src="docs/screenshots/home-tablet.jpg" alt="Tablet 1" style="border-radius: 12px;" />
 
-<!-- Login Screen -->
+Movie Cards and Login
 <img src="docs/screenshots/movies-mobile.png" alt="Mobile 2" style="border-radius: 12px;" />
 <img src="docs/screenshots/login-tablet.jpg" alt="Tablet 2" style="border-radius: 12px;" />
 
-<!-- Movie Details -->
+Menu Tray and Movie Details
 <img src="docs/screenshots/details-mobile.png" alt="Mobile 3" style="border-radius: 12px;" />
 <img src="docs/screenshots/details-tablet.png" alt="Tablet 3" style="border-radius: 12px;" />
 
