@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
+import { api } from '../api.js';
 
 const Container = styled.div`
   padding: 1rem;
@@ -29,9 +29,7 @@ const MovieDetails = () => {
     const fetchMovie = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${import.meta.env.REACT_APP_TMDB_API_KEY}`
-        );
+        const res = await api.get(`movies/${id}`);
         setMovie(res.data);
       } catch (err) {
         console.error(err);
@@ -45,7 +43,11 @@ const MovieDetails = () => {
   }, [id]);
 
   if (loading) {
-    return <p className="p-4">Loading...</p>;
+    return (
+      <Container>
+        <p>Loading...</p>
+      </Container>
+    );
   }
 
   if (!movie) {
