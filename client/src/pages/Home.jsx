@@ -87,9 +87,6 @@ const Home = () => {
     } catch (err) {
       setSearchError('Failed to fetch search results');
     }
-    } catch {
-      setMovies([]);
-    }
   };
 
   const clearSearch = () => {
