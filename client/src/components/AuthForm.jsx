@@ -48,7 +48,7 @@ export default function AuthForm({ mode = 'login' }) {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-md bg-surface p-6 rounded-3xl shadow-xl text-white">
         <h2 className="text-2xl font-bold mb-4 text-center">
-          {isLogin ? "Login to CiFlix" : "Create Your Account"}
+          {isLogin ? "Login to MyMovies" : "Create Your Account"}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
