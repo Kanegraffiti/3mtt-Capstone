@@ -17,6 +17,8 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const loader = useRef(null);
   const [hasMore, setHasMore] = useState(true);
+  const [trendingError, setTrendingError] = useState('');
+  const [searchError, setSearchError] = useState('');
   const { user } = useContext(AuthContext);
 
   const loadMore = () => setPage(p => p + 1);
@@ -32,12 +34,14 @@ const Home = () => {
           localStorage.setItem('cache_trending', JSON.stringify(newMovies.slice(0, 20)));
         }
         if (page >= 25 || newMovies.length === 0) setHasMore(false);
+        setTrendingError('');
       } catch (err) {
         const cached = localStorage.getItem('cache_trending');
         if (cached && movies.length === 0) {
           setMovies(JSON.parse(cached));
         }
         setHasMore(false);
+        setTrendingError('Failed to fetch trending movies');
       }
     };
     if (hasMore) fetchMovies();
@@ -72,8 +76,13 @@ const Home = () => {
     if (genre) params.append('genre', genre);
     if (year) params.append('year', year);
     if (sortBy) params.append('sortBy', sortBy);
-    const res = await api.get(`movies/search?${params.toString()}`);
-    setMovies(res.data.results);
+    try {
+      const res = await api.get(`movies/search?${params.toString()}`);
+      setMovies(res.data.results);
+      setSearchError('');
+    } catch (err) {
+      setSearchError('Failed to fetch search results');
+    }
   };
 
   return (
@@ -100,6 +109,7 @@ const Home = () => {
         </select>
         <button className="px-4 py-2 bg-brand hover:bg-brand/90 text-white rounded" type="submit">Search</button>
       </form>
+      {searchError && <p className="text-red-500 mb-2">{searchError}</p>}
       {user && recommended.length > 0 && (
         <Slider title="Recommended for You">
           {recommended.map(m => (
@@ -114,6 +124,7 @@ const Home = () => {
           ))}
         </Slider>
       )}
+      {trendingError && <p className="text-red-500 mb-2">{trendingError}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {movies.map(m => <MovieCard key={m.id} movie={m} />)}
       </div>
