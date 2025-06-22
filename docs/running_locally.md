@@ -1,12 +1,12 @@
-# 🚀 Running Locally
+# Running Locally
 
-## 📦 Prerequisites
+## Prerequisites
 - Termux installed via F-Droid
 - Node.js and Git installed using `pkg install nodejs git`
 - nano as optional CLI editor
-- MongoDB not yet connected, but UI + API run correctly
+- MongoDB is connected, UI + API run correctly
 
-## 🏃‍♀️ Android – Termux Steps (all verified ✅)
+## Android – Termux Steps (all verified ✅)
 1. Update packages
    ```bash
    pkg update && pkg upgrade
@@ -37,7 +37,7 @@
 10. Backend runs ✅
 11. MongoDB fails to connect (expected, no cloud URI yet)
 
-### 🔐 Environment files
+### Environment files
 Environment files were created manually:
 
 <details>
@@ -59,14 +59,14 @@ VITE_API_URL=http://localhost:5000
 ```
 </details>
 
-## 🧠 MongoDB Setup (Optional)
+## MongoDB Setup (Optional)
 1. Create a free MongoDB Atlas cluster
 2. Whitelist `0.0.0.0/0`
 3. Use a non-SRV connection string (Driver 3.6 or earlier)
 4. Update `MONGO_URI` in `server/.env`
 5. Restart backend using `npm run dev`
 
-## 🖥️ Windows Setup
+## Windows Setup
 1. Install Node.js and Git
 2. Clone the repo
 3. Install server and client dependencies
@@ -74,9 +74,9 @@ VITE_API_URL=http://localhost:5000
 5. Run backend and frontend in two terminal windows
 6. Open `http://localhost:3000` in browser
 
-## 🧪 Production Instructions
+## Production Instructions
 1. Build frontend using `npm run build`
 2. Serve via Express or static server
 3. Backend uses `npm start`
 
-Made with ☕, 🍫, and the relentless spirit of a Nigerian dev 🦅
+Made with ♥️ and lots of ☕.
