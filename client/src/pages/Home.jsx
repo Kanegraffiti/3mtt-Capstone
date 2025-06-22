@@ -19,6 +19,7 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const [trendingError, setTrendingError] = useState('');
   const [searchError, setSearchError] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const { user } = useContext(AuthContext);
 
   const loadMore = () => setPage(p => p + 1);
@@ -44,8 +45,8 @@ const Home = () => {
         setTrendingError('Failed to fetch trending movies');
       }
     };
-    if (hasMore) fetchMovies();
-  }, [page]);
+    if (!isSearching && hasMore) fetchMovies();
+  }, [page, isSearching]);
 
 
   useEffect(() => {
@@ -71,6 +72,9 @@ const Home = () => {
 
   const search = async (e) => {
     e.preventDefault();
+    setIsSearching(true);
+    setPage(1);
+    setHasMore(false);
     const params = new URLSearchParams();
     if (query) params.append('q', query);
     if (genre) params.append('genre', genre);
@@ -83,6 +87,20 @@ const Home = () => {
     } catch (err) {
       setSearchError('Failed to fetch search results');
     }
+    } catch {
+      setMovies([]);
+    }
+  };
+
+  const clearSearch = () => {
+    setIsSearching(false);
+    setMovies([]);
+    setQuery('');
+    setGenre('');
+    setYear('');
+    setSortBy('');
+    setPage(1);
+    setHasMore(true);
   };
 
   return (
@@ -108,6 +126,15 @@ const Home = () => {
           <option value="release_date.desc">Newest</option>
         </select>
         <button className="px-4 py-2 bg-brand hover:bg-brand/90 text-white rounded" type="submit">Search</button>
+        {isSearching && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
+          >
+            Clear
+          </button>
+        )}
       </form>
       {searchError && <p className="text-red-500 mb-2">{searchError}</p>}
       {user && recommended.length > 0 && (
