@@ -19,10 +19,11 @@ export const updateProfile = async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
     if (req.body.name) user.name = req.body.name;
     if (req.body.email) user.email = req.body.email;
+    if (req.body.avatar) user.avatar = req.body.avatar;
     await user.save();
     const watchlist = await Watchlist.findOne({ user: req.user });
     const reviews = await Review.find({ userId: req.user });
-    const cleanUser = { _id: user._id, name: user.name, email: user.email };
+    const cleanUser = { _id: user._id, name: user.name, email: user.email, avatar: user.avatar };
     res.json({ user: cleanUser, watchlist: watchlist ? watchlist.movies : [], reviews });
   } catch (err) {
     res.status(500).json({ message: err.message });

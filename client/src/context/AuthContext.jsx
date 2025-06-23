@@ -41,13 +41,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateProfile = async (name, email) => {
+  const updateProfile = async (name, email, avatar) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
       const res = await api.put(
         'users/profile',
-        { name, email },
+        { name, email, avatar },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(res.data);
