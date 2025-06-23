@@ -31,6 +31,7 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showReviews, setShowReviews] = useState(false);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -110,7 +111,17 @@ const MovieDetails = () => {
             />
           </div>
           <RatingStars movieId={movie.id} />
-          <ReviewList movieId={movie.id} />
+          <button
+            onClick={() => setShowReviews(p => !p)}
+            className="mb-4 font-semibold hover:underline"
+          >
+            {showReviews ? 'Hide reviews ▲' : 'Show reviews ▼'}
+          </button>
+          <div
+            className={`transition-[max-height] duration-500 overflow-hidden ${showReviews ? 'max-h-[40rem]' : 'max-h-0'}`}
+          >
+            <ReviewList movieId={movie.id} />
+          </div>
           <ReviewForm movieId={movie.id} />
           <SocialShareButtons movie={movie} />
         </>
