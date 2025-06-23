@@ -1,10 +1,14 @@
 import { useEffect, useState, useContext } from 'react';
 import { api } from '../api.js';
-import MovieCard from '../components/MovieCard.jsx';
-import Slider from '../components/common/Slider.jsx';
+import MovieCard from '../components/common/MovieCard.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
 import SmartRecommendations from '../components/SmartRecommendations.jsx';
 import useMediaQuery from '../hooks/useMediaQuery.js';
+
+const scrollbarStyles = `
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+`;
 
 const Library = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -73,61 +77,86 @@ const Library = () => {
   if (!user) return <p className="p-4">Please login</p>;
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl mb-4">My Library</h2>
+    <>
+      <style>{scrollbarStyles}</style>
+      <div className="p-4">
+        <h2 className="text-xl mb-4">My Library</h2>
 
-      {favorites.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-lg mb-2">Favorites</h3>
-          <Slider>
-            {favorites.map(m => (
-              <MovieCard key={m.tmdbId} movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }} />
-            ))}
-          </Slider>
-        </div>
-      )}
+        {favorites.length > 0 && (
+          <section className="mb-8">
+            <h3 className="text-lg mb-2">Favorites</h3>
+            <div className="flex overflow-x-auto gap-3 scrollbar-hide">
+              {favorites.map(m => (
+                <MovieCard
+                  key={m.tmdbId}
+                  movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
-      {isDesktop && <SmartRecommendations />}
+        {isDesktop && <SmartRecommendations />}
 
-      <h3 className="text-lg mb-2">Watchlists</h3>
+        <h3 className="text-lg mb-2">Watchlists</h3>
 
-      <form onSubmit={create} className="mb-6 space-x-2">
-        <input className="p-1 text-black" value={name} onChange={e => setName(e.target.value)} placeholder="New list name" />
-        <input className="p-1 text-black" value={description} onChange={e => setDescription(e.target.value)} placeholder="Description" />
-        <button className="bg-blue-500 px-2" type="submit">Create</button>
-      </form>
+        <form onSubmit={create} className="mb-6 space-x-2">
+          <input
+            className="p-1 text-black"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="New list name"
+          />
+          <input
+            className="p-1 text-black"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            placeholder="Description"
+          />
+          <button className="bg-blue-500 px-2" type="submit">Create</button>
+        </form>
 
-      {lists.length === 0 && <p>No watchlists yet.</p>}
-      {lists.map(list => (
-        <div key={list._id} className="mb-8">
-          <div className="flex items-center mb-2 space-x-2">
-            <h3 className="text-lg">{list.name}</h3>
-            <button onClick={() => delList(list._id)} className="text-sm bg-red-500 px-2">Delete</button>
-          </div>
-          {list.description && <p className="mb-2 text-sm text-gray-300">{list.description}</p>}
-          {list.movies.length === 0 && <p>No movies.</p>}
-          <Slider>
-            {list.movies.map(m => (
-              <div key={m.tmdbId} style={{ position: 'relative' }}>
-                <MovieCard movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }} />
-                <button onClick={() => removeMovie(list._id, m.tmdbId)} style={{ position: 'absolute', top: '0.5rem', right: '0.5rem', background: '#ef4444', fontSize: '0.875rem', padding: '0 0.25rem' }}>Remove</button>
-                <select
-                  value={m.status}
-                  onChange={e => setStatus(list._id, m.tmdbId, e.target.value)}
-                  style={{ position: 'absolute', bottom: '0.5rem', left: '0.5rem', color: 'black', fontSize: '0.75rem' }}
+        {lists.length === 0 && <p>No watchlists yet.</p>}
+        {lists.map(list => (
+          <section key={list._id} className="mb-8">
+            <div className="flex items-center mb-2 space-x-2">
+              <h3 className="text-lg">{list.name}</h3>
+              <button
+                onClick={() => delList(list._id)}
+                className="text-sm bg-red-500 px-2"
+              >
+                Delete
+              </button>
+            </div>
+            {list.description && (
+              <p className="mb-2 text-sm text-gray-300">{list.description}</p>
+            )}
+            {list.movies.length === 0 && <p>No movies.</p>}
+            <div className="flex overflow-x-auto gap-3 scrollbar-hide">
+              {list.movies.map(m => (
+                <MovieCard
+                  key={m.tmdbId}
+                  movie={{ id: m.tmdbId, title: m.title, poster_path: m.posterPath }}
+                  onRemove={() => removeMovie(list._id, m.tmdbId)}
                 >
-                  <option value="To Watch">To Watch</option>
-                  <option value="Watching">Watching</option>
-                  <option value="Watched">Watched</option>
-                </select>
-              </div>
-            ))}
-          </Slider>
-        </div>
-      ))}
+                  <select
+                    value={m.status}
+                    onChange={e => setStatus(list._id, m.tmdbId, e.target.value)}
+                    className="absolute bottom-1 left-1 text-black text-xs"
+                  >
+                    <option value="To Watch">To Watch</option>
+                    <option value="Watching">Watching</option>
+                    <option value="Watched">Watched</option>
+                  </select>
+                </MovieCard>
+              ))}
+            </div>
+          </section>
+        ))}
 
-      {!isDesktop && <SmartRecommendations />}
-    </div>
+        {!isDesktop && <SmartRecommendations />}
+      </div>
+    </>
   );
 };
 
