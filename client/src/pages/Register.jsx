@@ -8,15 +8,18 @@ const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [status, setStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus('Registering...');
     const success = await register(name, email, password);
     if (success) {
+      setStatus('Registration successful');
       await login(email, password);
       navigate('/profile');
     } else {
-      alert('Registration failed');
+      setStatus('Registration failed');
     }
   };
 
@@ -31,6 +34,7 @@ const Register = () => {
       >
         Register
       </button>
+      {status && <p className="text-center text-sm text-blue-300 mt-2">{status}</p>}
     </form>
   );
 };

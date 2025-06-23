@@ -7,14 +7,27 @@ const MovieCard = ({ movie, onRemove, children }) => {
       className="relative flex-shrink-0 w-36 sm:w-44"
       style={{ minWidth: '140px' }}
     >
-      {onRemove && (
-        <button
-          onClick={() => onRemove(id)}
-          className="absolute right-1 top-1 bg-black/50 rounded-full p-1 hover:bg-red-600"
-        >
-          &times;
-        </button>
-      )}
+        {onRemove && (
+          <button
+            onClick={() => onRemove(id)}
+            className="absolute right-1 top-1 bg-black/50 rounded-full p-1 hover:bg-red-700"
+            aria-label="Remove"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              className="w-3 h-3 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
       <Link to={`/movie/${id}`}>
         <img
           src={`https://image.tmdb.org/t/p/w300${poster_path}`}

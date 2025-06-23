@@ -7,14 +7,17 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [status, setStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus('Logging in...');
     const success = await login(email, password);
     if (success) {
+      setStatus('Login successful');
       navigate('/profile');
     } else {
-      alert('Invalid email or password');
+      setStatus('Invalid email or password');
     }
   };
 
@@ -28,6 +31,7 @@ const Login = () => {
       >
         Login
       </button>
+      {status && <p className="text-center text-sm text-blue-300 mt-2">{status}</p>}
     </form>
   );
 };

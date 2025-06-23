@@ -85,8 +85,8 @@ const Home = () => {
     }
   };
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) fetchSearch(searchQuery, 1);
+  const handleSearch = async () => {
+    if (searchQuery.trim()) await fetchSearch(searchQuery, 1);
   };
 
   const goToPage = (newPage) => {
@@ -108,17 +108,17 @@ const Home = () => {
   return (
     <div className="p-4">
       <HeroVideo />
-      <div className="mb-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch();
+        }}
+        className="mb-4"
+      >
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handleSearch();
-            }
-          }}
           placeholder="Search movies..."
           className="bg-gray-100 text-black border border-gray-300 p-2 w-full rounded"
         />
@@ -162,7 +162,7 @@ const Home = () => {
           />
         </div>
         <button
-          onClick={handleSearch}
+          type="submit"
           className="mt-2 bg-purple-600 text-white px-4 py-1 rounded"
         >
           Search
@@ -178,7 +178,7 @@ const Home = () => {
             Clear
           </button>
         )}
-      </div>
+      </form>
       {trendingError && <p className="text-red-500 mb-2">{trendingError}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {movies.map((m) => (
