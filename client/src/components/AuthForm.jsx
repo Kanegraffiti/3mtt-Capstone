@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx';
 
@@ -18,6 +18,10 @@ export default function AuthForm({ mode = 'login' }) {
     setIsLogin(!isLogin);
     setMessage("");
   };
+
+  useEffect(() => {
+    setIsLogin(mode === 'login');
+  }, [mode]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -84,7 +88,7 @@ export default function AuthForm({ mode = 'login' }) {
 
           <button
             type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 p-3 rounded-3xl font-semibold transition cursor-pointer"
+            className="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-3xl font-semibold transition cursor-pointer"
           >
             {isLogin ? "Login" : "Register"}
           </button>
