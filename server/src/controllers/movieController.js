@@ -7,12 +7,13 @@ const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 export const searchMovies = async (req, res) => {
   try {
-    const { q, year, genre, sortBy } = req.query;
+    const { q, year, genre, sortBy, page = 1 } = req.query;
     const params = new URLSearchParams({ api_key: process.env.TMDB_API_KEY });
     if (q) params.append('query', q);
     if (year) params.append('year', year);
     if (genre) params.append('with_genres', genre);
     if (sortBy) params.append('sort_by', sortBy);
+    params.append('page', page);
 
     let endpoint = `${TMDB_BASE}/search/movie?${params}`;
     // If no text query is provided, fall back to discover endpoint so

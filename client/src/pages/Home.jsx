@@ -6,6 +6,12 @@ import HeroVideo from '../components/HeroVideo.jsx';
 import useInfiniteScroll from '../hooks/useInfiniteScroll.js';
 import { AuthContext } from '../context/AuthContext.jsx';
 
+const GENRE_IDS = {
+  Action: 28,
+  Romance: 10749,
+  Comedy: 35,
+};
+
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -59,7 +65,10 @@ const Home = () => {
       const res = await api.get('movies/search', {
         params: {
           q,
-          genre: searchFilters.genres.join(','),
+          genre: searchFilters.genres
+            .map((name) => GENRE_IDS[name])
+            .filter(Boolean)
+            .join(','),
           year: searchFilters.year,
           page: pageNum,
         },
