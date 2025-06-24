@@ -37,25 +37,25 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-surface rounded overflow-hidden hover:shadow-lg transition hover:scale-105"
+      className="bg-surface rounded overflow-hidden hover:shadow-lg"
     >
-      <Link to={`/movie/${movie.id}`}>
-        <img
-          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-          alt={movie.title}
-          className="w-full h-[250px] object-cover"
-        />
-      </Link>
+      <div className="relative group">
+        <Link to={`/movie/${movie.id}`}>
+          <img
+            src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+            alt={movie.title}
+            className="w-full aspect-[2/3] object-cover transition-transform group-hover:scale-105"
+          />
+        </Link>
+        <button
+          onClick={addWatchlist}
+          className="absolute bottom-1 right-1 bg-brand-from text-white rounded-full p-1 text-xs"
+        >
+          +
+        </button>
+      </div>
       <div className="p-2">
         <h3 className="text-center text-sm font-semibold truncate">{movie.title}</h3>
-        <div className="flex justify-center gap-2 mt-2">
-          <button onClick={addFavorite} className="bg-brand hover:bg-brand/90 text-white px-2 py-1 text-xs rounded">
-            ❤️ Favorite
-          </button>
-          <button onClick={addWatchlist} className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 text-xs rounded">
-            🎬 Watchlist
-          </button>
-        </div>
       </div>
     </motion.div>
   );

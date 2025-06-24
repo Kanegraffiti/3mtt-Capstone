@@ -25,7 +25,9 @@ const ReviewList = ({ movieId }) => {
     <ul className="space-y-2">
       {reviews.map((r) => (
         <li key={r.id || r._id} className="border-b border-gray-700 pb-1">
-          <strong>{r.author || r.userId}</strong>: {r.comment || r.content}
+          <div className="prose prose-invert">
+            <strong>{r.author || r.userId}</strong>: {r.comment || r.content}
+          </div>
         </li>
       ))}
     </ul>

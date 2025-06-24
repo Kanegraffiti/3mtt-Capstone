@@ -35,7 +35,7 @@ const Profile = () => {
         Logout
       </button>
 
-      <div className="bg-surface p-6 rounded-3xl shadow-lg text-white grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="bg-surface p-6 rounded-3xl shadow-lg text-white grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <AvatarPicker value={avatar} onChange={setAvatar} />
 

@@ -12,8 +12,13 @@ export default {
         background: '#0D1B2A',
         surface: '#1B263B',
         brand: '#8B2CF5',
+        'brand-from': '#8220ff',
+        'brand-to': '#00baff',
+      },
+      backgroundImage: {
+        'gradient-brand': 'linear-gradient(to right, var(--tw-gradient-stops))',
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };
