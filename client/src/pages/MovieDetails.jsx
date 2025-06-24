@@ -9,6 +9,7 @@ import RatingStars from '../components/movie/RatingStars.jsx';
 import ReviewList from '../components/movie/ReviewList.jsx';
 import ReviewForm from '../components/movie/ReviewForm.jsx';
 import SocialShareButtons from '../components/movie/SocialShareButtons.jsx';
+import Spinner from '../components/common/Spinner.jsx';
 
 const Container = styled.div`
   padding: 1rem;
@@ -30,8 +31,9 @@ const Poster = styled.img`
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [video, setVideo] = useState(null);
+  const [loadingTrailer, setLoadingTrailer] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
   const [showTrailer, setShowTrailer] = useState(false);
 
@@ -39,17 +41,11 @@ const MovieDetails = () => {
     const fetchMovie = async () => {
       setLoading(true);
       try {
-        const [movieRes, videoRes] = await Promise.all([
-          api.get(`movies/${id}`),
-          api.get(`movies/${id}/videos`),
-        ]);
+        const movieRes = await api.get(`movies/${id}`);
         setMovie(movieRes.data);
-        const ytVideo = (videoRes.data.results || []).find((v) => v.site === 'YouTube');
-        setVideo(ytVideo || null);
       } catch (err) {
         console.error(err);
         setMovie(null);
-        setVideo(null);
       } finally {
         setLoading(false);
       }
@@ -57,6 +53,29 @@ const MovieDetails = () => {
 
     fetchMovie();
   }, [id]);
+
+  const loadTrailer = async () => {
+    setLoadingTrailer(true);
+    try {
+      const res = await api.get(`movies/${id}/videos`);
+      const yt = (res.data.results || []).find(
+        (v) => v.site === 'YouTube' && v.type === 'Trailer' && v.official
+      );
+      if (yt) {
+        setVideo(yt);
+        setShowTrailer(true);
+      } else {
+        setVideo(null);
+        setShowTrailer(true);
+      }
+    } catch (err) {
+      console.error(err);
+      setVideo(null);
+      setShowTrailer(true);
+    } finally {
+      setLoadingTrailer(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -74,23 +93,19 @@ const MovieDetails = () => {
   return (
     <Container>
       <Title>{movie.title}</Title>
-      {video ? (
-        <button
-          onClick={() => setShowTrailer(true)}
-          className="mb-2 px-4 py-2 bg-brand-from text-white rounded w-fit"
-        >
-          Watch Trailer
-        </button>
-      ) : (
-        movie.poster_path && (
-          <Poster
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-          />
-        )
+      {movie.poster_path && (
+        <Poster
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+        />
       )}
-      {!video && <p>Trailer unavailable.</p>}
       <p>{movie.overview}</p>
+      <button
+        onClick={loadTrailer}
+        className="px-4 py-2 bg-brand-from text-white rounded w-fit mx-auto"
+      >
+        {loadingTrailer ? 'Loading...' : 'Watch Trailer'}
+      </button>
       <p>Release Date: {movie.release_date}</p>
       <div className="flex gap-2 flex-wrap">
         {movie.genres?.map((g) => (
@@ -130,13 +145,17 @@ const MovieDetails = () => {
         </>
       )}
       <Modal open={showTrailer} onClose={() => setShowTrailer(false)}>
-        {video && (
+        {loadingTrailer ? (
+          <Spinner />
+        ) : video ? (
           <iframe
             title="Trailer"
             src={`https://www.youtube.com/embed/${video.key}`}
             allowFullScreen
             className="w-full aspect-video"
           />
+        ) : (
+          <p className="text-center p-4">Trailer not available</p>
         )}
       </Modal>
     </Container>

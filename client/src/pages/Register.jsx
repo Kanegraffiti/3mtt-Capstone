@@ -9,9 +9,11 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setStatus('Registering...');
     const success = await register(name, email, password);
     if (success) {
@@ -21,18 +23,20 @@ const Register = () => {
     } else {
       setStatus('Registration failed');
     }
+    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4 max-w-sm mx-auto space-y-4">
-      <input className="w-full p-2 text-black" value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
-      <input className="w-full p-2 text-black" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-      <input type="password" className="w-full p-2 text-black" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+      <input className="w-full p-2 text-black rounded" value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
+      <input className="w-full p-2 text-black rounded" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+      <input type="password" className="w-full p-2 text-black rounded" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
       <button
-        className="w-full bg-purple-600 text-white px-4 py-1 rounded"
+        className="w-full bg-purple-600 text-white px-4 py-1 rounded disabled:opacity-50"
+        disabled={loading}
         type="submit"
       >
-        Register
+        {loading ? 'Loading...' : 'Register'}
       </button>
       {status && <p className="text-center text-sm text-blue-300 mt-2">{status}</p>}
     </form>

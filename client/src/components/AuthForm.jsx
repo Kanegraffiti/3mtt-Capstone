@@ -11,6 +11,7 @@ export default function AuthForm({ mode = 'login' }) {
     password: "",
   });
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,6 +30,7 @@ export default function AuthForm({ mode = 'login' }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let success = false;
     if (isLogin) {
       success = await login(formData.email, formData.password);
@@ -46,6 +48,7 @@ export default function AuthForm({ mode = 'login' }) {
         setMessage('Registration failed');
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -88,9 +91,10 @@ export default function AuthForm({ mode = 'login' }) {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-3xl font-semibold transition cursor-pointer"
+            className="w-full bg-purple-600 hover:bg-purple-700 p-3 rounded-3xl font-semibold transition cursor-pointer disabled:opacity-50"
+            disabled={loading}
           >
-            {isLogin ? "Login" : "Register"}
+            {loading ? 'Loading...' : isLogin ? 'Login' : 'Register'}
           </button>
         </form>
 
