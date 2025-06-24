@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  @apply font-sans bg-background text-white;
+  padding-bottom: 5rem;
+}
+
+@keyframes scrollBanner {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.banner-container {
+  overflow: hidden;
+}
+
+.scroll-banner {
+  display: flex;
+  width: max-content;
+  animation: scrollBanner 30s linear infinite;
+}
