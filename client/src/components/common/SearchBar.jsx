@@ -7,7 +7,7 @@ const SearchBar = ({ value, onChange, onSubmit }) => {
         e.preventDefault();
         onSubmit && onSubmit();
       }}
-      className="w-full max-w-xl mx-auto"
+      className="w-full sm:max-w-xl mx-auto"
     >
       <div className="flex shadow-md">
         <input
