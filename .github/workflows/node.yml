@@ -71,4 +71,5 @@ jobs:
           prod: true
           env: |
             VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_YT_API_KEY=${{ secrets.VITE_YT_API_KEY }}
 
