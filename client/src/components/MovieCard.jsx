@@ -57,11 +57,16 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
           }
         }
       }
-      if (vid) setTrailerKey(vid.key);
-      else setTrailerError('Trailer not available');
+      if (vid) {
+        setTrailerKey(vid.key);
+        return vid.key;
+      }
+      setTrailerError('Trailer not available');
+      return null;
     } catch (err) {
       console.error(err);
       setTrailerError('Trailer not available');
+      return null;
     } finally {
       setLoadingTrailer(false);
     }
@@ -69,9 +74,13 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
 
   const openTrailer = async () => {
     if (!trailerKey && !loadingTrailer) {
-      await fetchTrailer();
+      const key = await fetchTrailer();
+      if (key) {
+        setShowTrailer(true);
+      }
+    } else if (trailerKey) {
+      setShowTrailer(true);
     }
-    if (trailerKey) setShowTrailer(true);
   };
 
 
