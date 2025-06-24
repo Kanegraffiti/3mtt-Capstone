@@ -14,6 +14,7 @@ const GENRE_IDS = {
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const [trending, setTrending] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const loader = useRef(null);
@@ -31,6 +32,13 @@ const Home = () => {
 
   const loadMore = () => setPage((p) => p + 1);
   useInfiniteScroll({ loader, hasMore, loadMore });
+
+  useEffect(() => {
+    api
+      .get('movies/trending?page=1')
+      .then((res) => setTrending(res.data.results.slice(0, 10)))
+      .catch(() => setTrending([]));
+  }, []);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -107,78 +115,47 @@ const Home = () => {
 
   return (
     <div className="p-4">
-      <HeroVideo />
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSearch();
-        }}
-        className="mb-4"
-      >
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search movies..."
-          className="bg-gray-100 text-black border border-gray-300 p-2 w-full rounded"
-        />
-        <div className="flex flex-wrap gap-2 mt-2">
-          <select
-            multiple
-            className="border p-2 rounded"
-            value={searchFilters.genres}
-            onChange={(e) =>
-              setSearchFilters((prev) => ({
-                ...prev,
-                genres: Array.from(e.target.selectedOptions).map((o) => o.value),
-              }))
-            }
-          >
-            <option value="Action">Action</option>
-            <option value="Romance">Romance</option>
-            <option value="Comedy">Comedy</option>
-          </select>
-          <input
-            type="text"
-            className="border p-2 w-20 rounded"
-            value={searchFilters.year}
-            onChange={(e) =>
-              setSearchFilters((prev) => ({ ...prev, year: e.target.value }))
-            }
-            placeholder="Year"
-          />
-          <input
-            type="number"
-            step="0.1"
-            className="border p-2 w-24 rounded"
-            value={searchFilters.minRating}
-            onChange={(e) =>
-              setSearchFilters((prev) => ({
-                ...prev,
-                minRating: e.target.value,
-              }))
-            }
-            placeholder="Min Rating"
-          />
-        </div>
-        <button
-          type="submit"
-          className="mt-2 bg-purple-600 text-white px-4 py-1 rounded"
-        >
-          Search
-        </button>
-        {searching && <p className="text-blue-400">Searching...</p>}
-        {searchError && <p className="text-red-500">{searchError}</p>}
-        {searchQuery && (
+      <HeroVideo
+        value={searchQuery}
+        onChange={setSearchQuery}
+        onSearch={handleSearch}
+      />
+      <div className="flex overflow-x-auto gap-2 py-2 mb-4">
+        {Object.keys(GENRE_IDS).map((g) => (
           <button
+            key={g}
             type="button"
-            onClick={clearSearch}
-            className="ml-2 px-4 py-1 bg-gray-500 text-white rounded"
+            onClick={() =>
+              setSearchFilters((prev) =>
+                prev.genres.includes(g)
+                  ? { ...prev, genres: prev.genres.filter((n) => n !== g) }
+                  : { ...prev, genres: [...prev.genres, g] }
+              )
+            }
+            className={`px-3 py-1 rounded-full whitespace-nowrap border ${searchFilters.genres.includes(g) ? 'bg-brand-from text-white' : 'bg-surface'}`}
           >
-            Clear
+            {g}
           </button>
-        )}
-      </form>
+        ))}
+      </div>
+      {searching && <p className="text-blue-400">Searching...</p>}
+      {searchError && <p className="text-red-500">{searchError}</p>}
+      {searchQuery && (
+        <button
+          type="button"
+          onClick={clearSearch}
+          className="mb-4 px-4 py-1 bg-gray-500 text-white rounded"
+        >
+          Clear
+        </button>
+      )}
+      {trending.length > 0 && (
+        <Slider title="Trending">
+          {trending.map((m) => (
+            <MovieCard key={m.id} movie={m} />
+          ))}
+        </Slider>
+      )}
       {trendingError && <p className="text-red-500 mb-2">{trendingError}</p>}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {movies.map((m) => (

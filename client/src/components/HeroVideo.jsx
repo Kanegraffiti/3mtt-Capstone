@@ -1,4 +1,10 @@
-export default function HeroVideo() {
+import SearchBar from './common/SearchBar.jsx';
+
+export default function HeroVideo({
+  value,
+  onChange,
+  onSearch,
+}) {
   return (
     <section className="relative w-full h-[60vh] md:h-[70vh] overflow-hidden">
       <video
@@ -16,6 +22,7 @@ export default function HeroVideo() {
         <p className="max-w-xl mb-6">
           Explore top-rated movies, build your watchlists and share with friends.
         </p>
+        <SearchBar value={value} onChange={onChange} onSubmit={onSearch} />
       </div>
     </section>
   );

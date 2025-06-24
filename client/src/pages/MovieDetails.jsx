@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import Modal from '../components/common/Modal.jsx';
 import { api } from '../api.js';
 import AddToWatchlistButton from '../components/movie/AddToWatchlistButton.jsx';
 import AddToFavoritesButton from '../components/movie/AddToFavoritesButton.jsx';
@@ -32,6 +33,7 @@ const MovieDetails = () => {
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showReviews, setShowReviews] = useState(false);
+  const [showTrailer, setShowTrailer] = useState(false);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -72,19 +74,20 @@ const MovieDetails = () => {
   return (
     <Container>
       <Title>{movie.title}</Title>
-      {video && (
-        <iframe
-          title="Trailer"
-          src={`https://www.youtube.com/embed/${video.key}`}
-          allowFullScreen
-          className="w-full aspect-video"
-        />
-      )}
-      {movie.poster_path && !video && (
-        <Poster
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-        />
+      {video ? (
+        <button
+          onClick={() => setShowTrailer(true)}
+          className="mb-2 px-4 py-2 bg-brand-from text-white rounded w-fit"
+        >
+          Watch Trailer
+        </button>
+      ) : (
+        movie.poster_path && (
+          <Poster
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+          />
+        )
       )}
       {!video && <p>Trailer unavailable.</p>}
       <p>{movie.overview}</p>
@@ -126,6 +129,16 @@ const MovieDetails = () => {
           <SocialShareButtons movie={movie} />
         </>
       )}
+      <Modal open={showTrailer} onClose={() => setShowTrailer(false)}>
+        {video && (
+          <iframe
+            title="Trailer"
+            src={`https://www.youtube.com/embed/${video.key}`}
+            allowFullScreen
+            className="w-full aspect-video"
+          />
+        )}
+      </Modal>
     </Container>
   );
 };

@@ -3,8 +3,8 @@ import React from 'react';
 const Modal = ({ open, onClose, children }) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-surface p-4 rounded shadow-lg">
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+      <div className="bg-surface p-4 rounded shadow-lg max-w-2xl w-full">
         {children}
         <button
           onClick={onClose}
