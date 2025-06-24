@@ -118,6 +118,19 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
             src={`https://www.youtube.com/embed/${trailerKey}`}
             allowFullScreen
             className="w-full aspect-video"
+
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-surface rounded overflow-hidden hover:shadow-lg w-36 sm:w-44 flex-shrink-0"
+    >
+      <div className="relative group">
+        <Link to={`/movie/${movie.id}`}>
+          <img
+            src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+            alt={movie.title}
+            className="w-full aspect-[2/3] object-cover transition-transform group-hover:scale-10
           />
         ) : (
           <p className="text-center p-4">{trailerError}</p>
