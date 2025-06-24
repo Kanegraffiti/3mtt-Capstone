@@ -37,7 +37,7 @@ const MovieCard = ({ movie, onAddFavorite, onAddWatchlist }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="bg-surface rounded overflow-hidden hover:shadow-lg"
+      className="bg-surface rounded overflow-hidden hover:shadow-lg w-36 sm:w-44 flex-shrink-0"
     >
       <div className="relative group">
         <Link to={`/movie/${movie.id}`}>
