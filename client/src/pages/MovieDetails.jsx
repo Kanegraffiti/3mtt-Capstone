@@ -23,7 +23,9 @@ const Title = styled.h2`
 
 const Poster = styled.img`
   max-width: 300px;
-  border-radius: 4px;
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   align-self: center;
 `;
 
@@ -74,6 +76,12 @@ const MovieDetails = () => {
   return (
     <Container>
       <Title>{movie.title}</Title>
+      {movie.poster_path && (
+        <Poster
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+        />
+      )}
       {video ? (
         <button
           onClick={() => setShowTrailer(true)}
@@ -82,14 +90,8 @@ const MovieDetails = () => {
           Watch Trailer
         </button>
       ) : (
-        movie.poster_path && (
-          <Poster
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-          />
-        )
+        <p>Trailer unavailable.</p>
       )}
-      {!video && <p>Trailer unavailable.</p>}
       <p>{movie.overview}</p>
       <p>Release Date: {movie.release_date}</p>
       <div className="flex gap-2 flex-wrap">

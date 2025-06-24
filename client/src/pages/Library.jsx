@@ -100,20 +100,25 @@ const Library = () => {
 
         <h3 className="text-lg mb-2">Watchlists</h3>
 
-        <form onSubmit={create} className="mb-6 space-x-2">
+        <form onSubmit={create} className="mb-6 flex flex-col sm:flex-row gap-2">
           <input
-            className="p-1 text-black"
+            className="p-2 rounded-md border border-gray-300 text-black flex-1"
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="New list name"
           />
           <input
-            className="p-1 text-black"
+            className="p-2 rounded-md border border-gray-300 text-black flex-1"
             value={description}
             onChange={e => setDescription(e.target.value)}
             placeholder="Description"
           />
-          <button className="bg-blue-500 px-2" type="submit">Create</button>
+          <button
+            className="bg-blue-500 px-4 py-2 rounded-md text-white w-full sm:w-auto"
+            type="submit"
+          >
+            Create
+          </button>
         </form>
 
         {lists.length === 0 && <p>No watchlists yet.</p>}
