@@ -79,4 +79,21 @@ VITE_API_URL=http://localhost:5000
 2. Serve via Express or static server
 3. Backend uses `npm start`
 
+## Student Lessons
+Sharing these setup notes across a cohort revealed a few lessons worth keeping front of mind for future builds:
+
+### Preparation pays off
+* Export your Termux packages list before a big reinstall so that you can restore your toolchain in minutes.
+* Save example `.env` files in an encrypted note—forgetting an API key will stall the entire class during demos.
+
+### Pairing makes debugging faster
+* When MongoDB refused connections, screen-sharing the failing terminal command helped mentors spot firewall rules instantly.
+* Rotating “navigator” and “driver” roles kept everyone engaged, even if they were away from their own development machines.
+
+### Document as you go
+* Capturing each command with a short “why it matters” line is priceless when you revisit the project after a break.
+* Posting lessons in the team chat created an organic FAQ that prevented repeat blockers for new learners.
+
+See [`docs/student_lessons.md`](student_lessons.md) for a comprehensive breakdown of the habits we built while shipping the project.
+
 Made with ♥️ and lots of ☕.
