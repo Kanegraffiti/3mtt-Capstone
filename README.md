@@ -75,4 +75,22 @@ Tablet
 ## Documentation
 Beginner friendly guides for running the project locally on Termux and Windows are available in [`docs/running_locally.md`](docs/running_locally.md).
 
+## Student Lessons
+
+Sharing the project with other learners surfaced a number of practical takeaways that go beyond the standard feature list:
+
+### Building a full stack movie app from scratch
+* **API hygiene matters early.** Planning consistent route names and response shapes saved hours when wiring the React hooks to the Express controllers. When we drifted from the plan, the TMDB payloads quickly became confusing to map.
+* **Defensive state management reduces flicker.** Using local storage fallbacks and keeping `searching`/`hasMore` flags synchronised helped smooth out the UI when the network was slow or unavailable.
+
+### Working as a student team
+* **Short feedback loops beat big rewrites.** Pairing on movie-card layouts in 30 minute bursts allowed us to iterate quickly without derailing everyone’s schedule.
+* **Documented rituals create predictability.** Writing down expectations for stand-ups, code reviews and deployment checklists meant that new collaborators could plug in faster.
+
+### Growing beyond the capstone
+* **Stretch ideas need discovery tasks.** Before rushing into social features or PWA work we now create research spikes to understand the data and UX implications.
+* **Career storytelling starts now.** We captured our “aha!” moments in a dedicated lessons log so they can be retold during portfolio reviews or technical interviews.
+
+You can read the extended write-up, including tooling tips, workflow templates and suggested follow-up exercises, in [`docs/student_lessons.md`](docs/student_lessons.md).
+
 Enjoy exploring MyMovies and feel free to build on it or contribute!
